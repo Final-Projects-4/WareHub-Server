@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -15,40 +13,43 @@ module.exports = (sequelize, DataTypes) => {
       Customer.belongsTo(models.User,{foreignKey: 'user_id'})
     }
   }
-  Customer.init({
-    first_name: {
-      type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
+  Customer.init(
+    {
+      first_name: {
+        type: DataTypes.STRING,
+        notEmpty: true,
+        allowNull: false,
+      },
+      last_name: {
+        type: DataTypes.STRING,
+        notEmpty: true,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        notEmpty: true,
+        allowNull: false,
+      },
+      address: {
+        type: DataTypes.STRING,
+        notEmpty: true,
+        allowNull: false,
+      },
+      company: {
+        type: DataTypes.STRING,
+        notEmpty: true,
+        allowNull: false,
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        notEmpty: true,
+        allowNull: false,
+      },
     },
-    last_name: {
-      type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
-    email: {
-      type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
-    address: {
-      type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
-    company: {
-      type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
+    {
+      sequelize,
+      modelName: "Customer",
     }
-  }, {
-    sequelize,
-    modelName: 'Customer',
-  });
+  );
   return Customer;
 };
