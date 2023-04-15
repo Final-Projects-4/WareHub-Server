@@ -8,7 +8,6 @@ const config = {
         host: process.env.HOST,
         dialect: 'postgres'
     },
-
     test :{
         username: process.env.DB_USERNAME,
         password: process.env.PASSWORD,
