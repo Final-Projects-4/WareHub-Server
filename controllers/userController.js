@@ -18,12 +18,12 @@ class UserController {
     
     static async login(username, password) {
         try {
-            const user = await User.findOne({ where: { username: username } });
+            const user = await User.findOne({ where: { username } });
         if (!user) {
             throw new Error('Invalid username or password');
         }
-        const isValidPassword = await user.validatePassword(password);
-        if (!isValidPassword) {
+        const passwordMatch = await bcrypt.compare(password, user.password); // compare the hashed password with the entered password using bcrypt
+        if (!passwordMatch) {
             throw new Error('Invalid username or password');
         }
         const token = jwt.sign(
