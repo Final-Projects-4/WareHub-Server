@@ -17,13 +17,17 @@ module.exports = (sequelize, DataTypes) => {
   Category.init({
     name: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
     },
     description: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        } 
     }
   }, {
     sequelize,

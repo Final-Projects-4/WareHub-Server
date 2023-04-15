@@ -18,19 +18,25 @@ module.exports = (sequelize, DataTypes) => {
   OrderDetail.init({
     product_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     order_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     detail: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    }
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      }
   }, {
     sequelize,
     modelName: 'OrderDetail',

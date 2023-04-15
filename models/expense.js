@@ -16,18 +16,24 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: {
         type: DataTypes.INTEGER,
-        notEmpty: true,
         allowNull: false,
+        validate: {
+          notEmpty: true
+        }
       },
       expense: {
         type: DataTypes.INTEGER,
-        notEmpty: true,
         allowNull: false,
+        validate: {
+          notEmpty: true
+        }
       },
       detail: {
         type: DataTypes.STRING,
-        notEmpty: true,
         allowNull: false,
+        validate: {
+          notEmpty: true
+        }
       },
     },
     {

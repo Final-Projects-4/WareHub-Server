@@ -23,39 +23,53 @@ module.exports = (sequelize, DataTypes) => {
   Product.init({
     user_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     name: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     price: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     weight: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     size: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     description: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     SKU: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    }
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      }
   }, {
     sequelize,
     modelName: 'Product',
