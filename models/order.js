@@ -19,19 +19,25 @@ module.exports = (sequelize, DataTypes) => {
   Order.init({
     user_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     customer_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     name: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    }
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      }
   }, {
     sequelize,
     modelName: 'Order',

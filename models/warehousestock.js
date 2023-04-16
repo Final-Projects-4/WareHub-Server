@@ -19,19 +19,25 @@ module.exports = (sequelize, DataTypes) => {
   WarehouseStock.init({
     product_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
     },
     warehouse_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
     },
     quantity: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    }
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+    },
   }, {
     sequelize,
     modelName: 'WarehouseStock',

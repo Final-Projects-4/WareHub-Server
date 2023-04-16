@@ -17,19 +17,25 @@ module.exports = (sequelize, DataTypes) => {
   Revenue.init({
     user_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     revenue: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     detail: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
-    }
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      }
   }, {
     sequelize,
     modelName: 'Revenue',

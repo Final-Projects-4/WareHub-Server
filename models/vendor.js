@@ -17,13 +17,17 @@ module.exports = (sequelize, DataTypes) => {
   Vendor.init({
     name: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
     },
     country: {
       type: DataTypes.STRING,
-      notEmpty: true,
-      allowNull: false 
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
     }
   }, {
     sequelize,

@@ -19,14 +19,18 @@ module.exports = (sequelize, DataTypes) => {
   ProductVendor.init({
     product_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    },
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     vendor_id: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
-      allowNull: false 
-    }
+      allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      }
   }, {
     sequelize,
     modelName: 'ProductVendor',
