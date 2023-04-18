@@ -1,21 +1,24 @@
+// controllers/UserController.js
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 class UserController {
-  static async register(first_name, last_name, email, username, password, address, company) {
+  static async register(req, res, next) {
     try {
+      const { first_name, last_name, email, username, password, address, company } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await User.create({ first_name, last_name, email, username, password: hashedPassword, address, company });
-      return user;
+      res.status(201).json(user);
     } catch (error) {
       console.log(error);
-      throw new Error('Error creating user');
+      res.status(400).json({ message: 'Error creating user' });
     }
   }
 
-  static async login(username, password) {
+  static async login(req, res, next) {
     try {
+      const { username, password } = req.body;
       const user = await User.findOne({ where: { username } });
       if (!user) {
         throw new Error('Invalid username or password');
@@ -34,68 +37,20 @@ class UserController {
           expiresIn: '1d',
         }
       );
-      return token;
+      res.status(200).json({ token });
     } catch (error) {
       console.log(error);
-      throw new Error('Error logging in');
+      res.status(400).json({ message: 'Error logging in' });
     }
   }
 
-  static async getUsers() {
+  static async getAll(req, res, next) {
     try {
-      const users = await User.findAll();
-      return users;
+      const data = await User.findAll({});
+      res.status(200).json(data);
     } catch (error) {
       console.log(error);
-      throw new Error('Error getting users');
-    }
-  }
-
-  static async getUser(id) {
-    try {
-      const user = await User.findByPk(id);
-      return user;
-    } catch (error) {
-      console.log(error);
-      throw new Error(`Error getting user with id ${id}`);
-    }
-  }
-
-  static async createUser(userData) {
-    try {
-      const user = await User.create(userData);
-      return user;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error creating user');
-    }
-  }
-
-  static async updateUser(id, userData) {
-    try {
-      const user = await User.findByPk(id);
-      if (!user) {
-        throw new Error(`User with id ${id} not found`);
-      }
-      await user.update(userData);
-      return user;
-    } catch (error) {
-      console.log(error);
-      throw new Error(`Error updating user with id ${id}`);
-    }
-  }
-
-  static async deleteUser(id) {
-    try {
-      const user = await User.findByPk(id);
-      if (!user) {
-        throw new Error(`User with id ${id} not found`);
-      }
-      await user.destroy();
-      return { message: 'User deleted successfully' };
-    } catch (error) {
-      console.log(error);
-      throw new Error(`Error deleting user with id ${id}`);
+      res.status(400).json({ message: 'Error getting users' });
     }
   }
 }
