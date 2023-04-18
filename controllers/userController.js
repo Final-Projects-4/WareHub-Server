@@ -1,7 +1,7 @@
-// controllers/UserController.js
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const errorHandler = require('../middlewares/errorHandler');
 
 class UserController {
   static async register(req, res, next) {
@@ -10,9 +10,9 @@ class UserController {
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await User.create({ first_name, last_name, email, username, password: hashedPassword, address, company });
       res.status(201).json(user);
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: 'Error creating user' });
+    } catch (err) {
+      console.log(err);
+      next(err);
     }
   }
 
@@ -38,9 +38,9 @@ class UserController {
         }
       );
       res.status(200).json({ token });
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: 'Error logging in' });
+    } catch (err) {
+      console.log(err);
+      next(err);
     }
   }
 
@@ -48,9 +48,61 @@ class UserController {
     try {
       const data = await User.findAll({});
       res.status(200).json(data);
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: 'Error getting users' });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getOne(req, res, next) {
+    const {id} = req.params;
+
+    try {
+      const data = await User.findOne({
+        where : {
+          id
+        }
+      });
+
+      if(data) {
+        res.status(200).json(data)
+      } else {
+        throw {name: "ErrorNotFound"}
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async update(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { first_name, last_name, email, username, password, address, company } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const [updatedRowsCount, [updatedUser]] = await User.update(
+        { first_name, last_name, email, username, password: hashedPassword, address, company },
+        { where: { id }, returning: true }
+      );
+      if (updatedRowsCount !== 1) {
+        throw new Error('User not found');
+      }
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  static async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+      const deletedRowsCount = await User.destroy({ where: { id } });
+      if (deletedRowsCount !== 1) {
+        throw new Error('User not found');
+      }
+      res.status(204).send();
+    } catch (err) {
+      console.log(err);
+      next(err);
     }
   }
 }

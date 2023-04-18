@@ -1,11 +1,17 @@
 const errorHandler = (err, req, res, next) => {
-    console.error(err.stack);
-  
-    if (res.headersSent) {
-      return next(err);
+    if(err.name === "ErrorNotFound") {
+      res.status(404).json({
+        message: "Error Not Found"
+      })
+    } else if(err.name === "Invalid username or password") {
+      res.status(402).json({
+        message: "Invalid Username or Password"
+      })
+    } else {
+      res.status(500).json({
+        message: "Internal Server Error"
+      })
     }
-  
-    res.status(500).json({ error: 'Something went wrong!' });
   };
   
   module.exports = errorHandler;
