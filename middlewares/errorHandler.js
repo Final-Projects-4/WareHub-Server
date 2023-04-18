@@ -3,7 +3,7 @@ const errorHandler = (err, req, res, next) => {
       res.status(404).json({
         message: "Error Not Found"
       })
-    } else if(err.name === "Invalid username or password") {
+    } else if(err.name === "InvalidCredential") {
       res.status(402).json({
         message: "Invalid Username or Password"
       })

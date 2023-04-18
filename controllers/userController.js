@@ -21,11 +21,11 @@ class UserController {
       const { username, password } = req.body;
       const user = await User.findOne({ where: { username } });
       if (!user) {
-        throw new Error('Invalid username or password');
+        throw {name: 'InvalidCredential'};
       }
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
-        throw new Error('Invalid username or password');
+        throw {name: 'InvalidCredential'};
       }
       const token = jwt.sign(
         {
