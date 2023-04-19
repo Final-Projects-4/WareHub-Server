@@ -6,7 +6,7 @@ class CustomerController {
       res.status(200).json(data);
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static getById = async (req, res, next) => {
@@ -17,11 +17,15 @@ class CustomerController {
           id,
         },
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data == null) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static getByEmail = async (req, res, next) => {
@@ -32,11 +36,15 @@ class CustomerController {
           email,
         },
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data == null) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static postAdd = async (req, res, next) => {
@@ -55,7 +63,7 @@ class CustomerController {
       console.log(data);
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static delete = async (req, res, next) => {
@@ -65,12 +73,15 @@ class CustomerController {
         where: {
           id,
         },
+        returning: true,
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data !== 1) {
+        next( {name : "ErrorNotFound"});
+      }else {
+      res.status(200).json(" User Terhapus ");
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static update = async (req, res, next) => {
@@ -78,7 +89,7 @@ class CustomerController {
     const { user_id, first_name, last_name, email, address, company } =
       req.body;
     try {
-      const data = await Customer.update(
+      const [rows, [data]] = await Customer.update(
         {
           user_id,
           first_name,
@@ -91,13 +102,17 @@ class CustomerController {
           where: {
             id,
           },
+          returning: true,
         }
       );
-      res.status(200).json(data);
-      console.log(data);
+      if (rows !== 1) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
 }

@@ -4,10 +4,14 @@ class CategoryController {
   static getAll = async (req, res, next) => {
     try {
       const data = await Category.findAll({});
-      res.status(200).json(data);
+      if (data == null) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static getById = async (req, res, next) => {
@@ -18,11 +22,14 @@ class CategoryController {
           id,
         },
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data == null) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static getByName = async (req, res, next) => {
@@ -33,11 +40,14 @@ class CategoryController {
           name,
         },
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data == null) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static postAdd = async (req, res, next) => {
@@ -47,11 +57,14 @@ class CategoryController {
         name,
         description,
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data == null) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static delete = async (req, res, next) => {
@@ -62,18 +75,20 @@ class CategoryController {
           id,
         },
       });
-      res.status(200).json(data);
-      console.log(data);
+      if (data !== 1) {
+        next( {name : "ErrorNotFound"});
+      }else {
+      res.status(200).json(" Category Terhapus ");
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
   static update = async (req, res, next) => {
     const { id } = req.params;
     const { name } = req.body;
     try {
-      const data = await Category.update(
+      const [rows, [data]] = await Category.update(
         {
           name: name,
         },
@@ -81,13 +96,17 @@ class CategoryController {
           where: {
             id,
           },
+          returning: true,
         }
       );
-      res.status(200).json(data);
-      console.log(data);
+      if (rows !== 1) {
+        next( {name : "ErrorNotFound"});
+      } else {
+        res.status(200).json(data);
+        console.log(data);
+      }
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(error);
     }
   };
 }
