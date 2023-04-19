@@ -5,7 +5,7 @@ class CustomerController {
       const data = await Customer.findAll({});
       res.status(200).json(data);
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -18,9 +18,9 @@ class CustomerController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -33,9 +33,9 @@ class CustomerController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -52,9 +52,9 @@ class CustomerController {
         company,
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -67,9 +67,9 @@ class CustomerController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -94,9 +94,9 @@ class CustomerController {
         }
       );
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
