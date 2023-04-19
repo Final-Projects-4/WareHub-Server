@@ -10,6 +10,11 @@
     "nodemailer": "^6.9.1",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.31.0"
+    "sequelize": "^6.31.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2"
+  },
+  "scripts": {
+    "nodemon" : "nodemon -e yml,js,json ./app.js"
   }
 }
