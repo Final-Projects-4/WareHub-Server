@@ -1,0 +1,752 @@
+openapi: '3.0.2'
+info:
+  title: 'API WareHub Server'
+  description: >-
+    "Dokumentasi WareHub API"
+  version: '1.0'
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Category
+    description : Category Api
+  - name: Customers
+    description : Customers Api
+  - name: Expense
+    description : Expense Api
+  - name: Order
+    description : Order Api
+  - name: Products
+    description : Products Api
+  - name: Revenue
+    description : Revenue Api
+  - name: Vendor
+    description : Vendor Api
+  - name: Warehouse
+    description : Warehouse Api
+  - name: User
+    description : User Api
+paths:
+#Users Api
+  /users/:
+    get:
+      tags:
+        - "User"
+      description: 'Get All User Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/userGetRespons'  
+  /users/register:
+    post:
+      tags:
+        - "User"
+      description: 'Register New Users'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/userReqBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/registerRespons'
+  /users/login:
+    post:
+      tags:
+        - "User"
+      description: 'Login User'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/userLogin'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/loginRespons'
+  /users/{id}:
+    get:
+      tags:
+        - "User"
+      description: 'Get User By Id'
+      summary: Get User By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/userGetRespons'
+    put:
+      tags:
+        - "User"
+      description: 'Update User By Id'
+      summary: Update User By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/userReqBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/userGetRespons'
+    delete:
+      tags:
+        - "User"
+      description: 'Delete User By Id'
+      summary: Delete User By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            type : integer
+          required: true
+          description: Numeric ID of the user to Delete
+      responses:
+        '200':
+          description: OK
+#Product
+  /products/:
+    get:
+      tags:
+        - "Products"
+      description: 'Get All Products Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/productsGetRespons'  
+  /products/{id}:
+    get:
+      tags:
+        - "Products"
+      description: 'Get products By Id'
+      summary: Get products By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/productsGetRespons'
+    put:
+      tags:
+        - "Products"
+      description: 'Update products By Id'
+      summary: Update products By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/productPut'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/productsGetRespons'
+    delete:
+      tags:
+        - "Products"
+      description: 'Delete products By Id'
+      summary: Delete products By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            type : integer
+          required: true
+          description: Numeric ID of the user to Delete
+      responses:
+        '200':
+          description: OK
+#Customers
+  /customers/:
+    get:
+      tags:
+        - "Customers"
+      description: 'Get All Customers Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/customersGetRespons'  
+    post:
+      tags:
+        - "Customers"
+      description: 'Post Customers Data'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/customersPost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/customersPostRespons'  
+  /customers/{id}:
+    get:
+      tags:
+        - "Customers"
+      description: 'Get Customers By Id'
+      summary: Get Customers By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/customersGetRespons'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+    put:
+      tags:
+        - "Customers"
+      description: 'Update Customers By Id'
+      summary: Update Customers By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/customersPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/customersPutRespons'
+    delete:
+      tags:
+        - "Customers"
+      description: 'Delete Customers By Id'
+      summary: Delete Customers By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            type : integer
+          required: true
+          description: Numeric ID of the Customers to Delete
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+#categories
+  /categories/:
+    get:
+      tags:
+        - "Category"
+      description: 'Get All Customers Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/categoriesGetRespons'  
+    post:
+      tags:
+        - "Category"
+      description: 'Post Customers Data'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/categoriesPost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/categoriesGetRespons'  
+  /categories/{id}:
+    get:
+      tags:
+        - "Category"
+      description: 'Get Customers By Id'
+      summary: Get Customers By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/categoriesGetRespons'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+    put:
+      tags:
+        - "Category"
+      description: 'Update Customers By Id'
+      summary: Update Customers By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the user to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/categoriesPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/customersPutRespons'
+    delete:
+      tags:
+        - "Category"
+      description: 'Delete Customers By Id'
+      summary: Delete Customers By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            type : integer
+          required: true
+          description: Numeric ID of the Customers to Delete
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+
+
+components:
+  schemas:
+  #Universal Schemas
+    getById : 
+      type: integer
+      format: uuid
+      example: "5"
+    eror:
+      type: object
+      properties:
+        message:
+          type: string
+          example : Error Not Found
+      additionalProperties: false
+      required:
+        - message
+  #Users Schemas Post
+    userReqBody :  
+      type: object
+      properties:
+        first_name : 
+          type: string
+          example: "Budi"
+        last_name : 
+          type: string
+          example: "Hartono"
+        username : 
+          type: string
+          example: "budih456"
+        email : 
+          type: string
+          example: "BidiHar56@gmail.com"
+        password :
+          type: string
+          example: "password"      
+        address :
+          type: string
+          example: "Jl simpang lima"     
+        company  :
+          type: string
+          example: "XYZ Ltd"
+    userLogin : 
+      type: object
+      properties:
+        username : 
+          type: string
+          example: "budih456"
+        password :
+          type: string
+          example: "password"
+    token :  
+      type: string
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTExLCJlbWFpbCI6IlRleHRAY29tLmNvbSIsImdlbmRlciI6IlByaWEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2Nzc5MTM4MzJ9.t2ipHScuH6aIO1XxZ_rgbMibBi201UD_JX04t4QSjcg"
+  #Users Schemas Respons
+    userGetRespons:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          first_name:
+            type: string
+          last_name:
+            type: string
+          email:
+            type: string
+          username:
+            type: string
+          password:
+            type: string
+          address:
+            type: string
+          company:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - id
+          - first_name
+          - last_name
+          - email
+          - username
+          - password
+          - address
+          - company
+          - createdAt
+          - updatedAt
+    registerRespons:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+        company:
+          type: string
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+      additionalProperties: false
+      required:
+        - id
+        - first_name
+        - last_name
+        - email
+        - username
+        - password
+        - address
+        - company
+        - updatedAt
+        - createdAt
+    loginRespons:
+      type: object
+      properties:
+        token:
+          type: string
+      additionalProperties: false
+      required:
+        - token
+  #Product Schemas
+    productPut :  
+      type: object
+      properties:
+        name : 
+          type: string
+          example: "Indomie Bakar"
+        price : 
+          type: integer
+          example: "35000"
+        weight : 
+          type: string
+          example: "10 Gram"
+        size : 
+          type: string
+          example: "1 Pcs"
+        description :
+          type: string
+          example: "Mie terenak sepanjang masa"      
+        SKU  :
+          type: string
+          example: "IndM980"     
+  #Product Schemas Respons
+    productsGetRespons:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          user_id:
+            type: integer
+          name:
+            type: string
+          price:
+            type: integer
+          weight:
+            type: string
+          size:
+            type: string
+          description:
+            type: string
+          SKU:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - id
+          - user_id
+          - name
+          - price
+          - weight
+          - size
+          - description
+          - SKU
+          - createdAt
+          - updatedAt
+  #customers Schemas 
+    customersPost :  
+      type: object
+      properties:
+        user_id : 
+          type: integer
+          example: "1"
+        first_name : 
+          type: string
+          example: "Shin"
+        last_name : 
+          type: string
+          example: "Chan"
+        email : 
+          type: string
+          example: "ShinchanRCti@gmail.com"
+        address : 
+          type: string
+          example: "Jln patimurra no 132"
+        company :
+          type: string
+          example: "PT timah negara"      
+  #customers Schemas Respons
+    customersGetRespons:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          first_name:
+            type: string
+          last_name:
+            type: string
+          email:
+            type: string
+          address:
+            type: string
+          company:
+            type: string
+          user_id:
+            type: integer
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - id
+          - first_name
+          - last_name
+          - email
+          - address
+          - company
+          - user_id
+          - createdAt
+          - updatedAt
+    customersPutRespons:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        company:
+          type: string
+        user_id:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      additionalProperties: false
+      required:
+        - id
+        - first_name
+        - last_name
+        - email
+        - address
+        - company
+        - user_id
+        - createdAt
+        - updatedAt
+    customersPostRespons:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        company:
+          type: string
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+      additionalProperties: false
+      required:
+        - id
+        - user_id
+        - first_name
+        - last_name
+        - email
+        - address
+        - company
+        - updatedAt
+        - createdAt
+  #Category Schemas 
+    categoriesPost :  
+      type: object
+      properties:
+        name : 
+          type: string
+          example: "Mainan"
+        description  : 
+          type: string
+          example: "Ini list permainan"    
+  #Category Schemas Respons
+    categoriesGetRespons:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          description:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - id
+          - name
+          - description
+          - createdAt
+          - updatedAt
