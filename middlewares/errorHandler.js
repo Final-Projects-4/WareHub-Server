@@ -7,7 +7,12 @@ const errorHandler = (err, req, res, next) => {
       res.status(402).json({
         message: "Invalid Username or Password"
       })
-    } else {
+    } else if(err.name === "Sequelize validation error") {
+      res.status(400).json({
+        message: "Validation Error"
+      })
+    } 
+    else {
       res.status(500).json({
         message: "Internal Server Error"
       })

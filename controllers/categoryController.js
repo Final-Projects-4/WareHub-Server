@@ -22,14 +22,11 @@ class CategoryController {
           id,
         },
       });
-      if (data == null) {
-        next( {name : "ErrorNotFound"});
-      } else {
-        res.status(200).json(data);
-        console.log(data);
-      }
+      res.status(200).json(data);
+      console.log(data);
     } catch (error) {
-      next(error);
+      console.log(error);
+      res.status(400).json({ message: "ada eror" });
     }
   };
   static getByName = async (req, res, next) => {
@@ -40,14 +37,11 @@ class CategoryController {
           name,
         },
       });
-      if (data == null) {
-        next( {name : "ErrorNotFound"});
-      } else {
-        res.status(200).json(data);
-        console.log(data);
-      }
+      res.status(200).json(data);
+      console.log(data);
     } catch (error) {
-      next(error);
+      console.log(error);
+      res.status(400).json({ message: "ada eror" });
     }
   };
   static postAdd = async (req, res, next) => {
@@ -57,14 +51,11 @@ class CategoryController {
         name,
         description,
       });
-      if (data == null) {
-        next( {name : "ErrorNotFound"});
-      } else {
-        res.status(200).json(data);
-        console.log(data);
-      }
+      res.status(200).json(data);
+      console.log(data);
     } catch (error) {
-      next(error);
+      console.log(error);
+      res.status(400).json({ message: "ada eror" });
     }
   };
   static delete = async (req, res, next) => {
@@ -75,13 +66,11 @@ class CategoryController {
           id,
         },
       });
-      if (data !== 1) {
-        next( {name : "ErrorNotFound"});
-      }else {
-      res.status(200).json(" Category Terhapus ");
-      }
+      res.status(200).json(data);
+      console.log(data);
     } catch (error) {
-      next(error);
+      console.log(error);
+      res.status(400).json({ message: "ada eror" });
     }
   };
   static update = async (req, res, next) => {
@@ -99,14 +88,11 @@ class CategoryController {
           returning: true,
         }
       );
-      if (rows !== 1) {
-        next( {name : "ErrorNotFound"});
-      } else {
-        res.status(200).json(data);
-        console.log(data);
-      }
+      res.status(200).json(data);
+      console.log(data);
     } catch (error) {
-      next(error);
+      console.log(error);
+      res.status(400).json({ message: "ada eror" });
     }
   };
 }
