@@ -404,6 +404,214 @@ paths:
             application/json:
               schema :
                 $ref: '#/components/schemas/eror'
+#Revenue
+  /revenue/:
+    get:
+      tags:
+        - "Revenue"
+      description: 'Get All Revenue Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/revenueGetResponse'  
+    post:
+      tags:
+        - "Revenue"
+      description: 'Post Revenue Data'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/revenuePost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/revenueGetResponse'  
+  /revenue/{id}:
+    get:
+      tags:
+        - "Category"
+      description: 'Get Revenue By Id'
+      summary: Get Revenue By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Revenue to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/revenueGetResponse'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+    put:
+      tags:
+        - "Revenue"
+      description: 'Update Revenue By Id'
+      summary: Update Revenue By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Revenue to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/revenuePut'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/revenuePutResponses'
+    delete:
+      tags:
+        - "Revenue"
+      description: 'Delete Revenue By Id'
+      summary: Delete Revenue By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Revenue to Delete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/revenueDelResponses'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+#Expense
+  /expense/:
+    get:
+      tags:
+        - "Expense"
+      description: 'Get All Revenue Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/expenseGetRespons'  
+    post:
+      tags:
+        - "Expense"
+      description: 'Post Revenue Data'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/expensePost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/expenseGetRespons'  
+  /expense/{id}:
+    get:
+      tags:
+        - "Expense"
+      description: 'Get Expense By Id'
+      summary: Get Expense By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Expense to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/expenseGetRespons'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+    put:
+      tags:
+        - "Expense"
+      description: 'Update Expense By Id'
+      summary: Update Expense By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Expense to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/expensePut'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/expensePutResponses'
+    delete:
+      tags:
+        - "Expense"
+      description: 'Delete Expense By Id'
+      summary: Delete Expense By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Expense to Delete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/expenseDelResponses'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
 
 
 components:
@@ -748,5 +956,136 @@ components:
           - id
           - name
           - description
+          - createdAt
+          - updatedAt
+  #Revenue Schemas
+    revenuePost :  
+      type: object
+      properties:
+        user_id : 
+          type: integer
+          example: "1"
+        revenue  : 
+          type: integer
+          example: "50000"    
+        detail  : 
+          type: string
+          example: "Penjualan Mainan"  
+    revenuePut :  
+      type: object
+      properties:
+        revenue  : 
+          type: integer
+          example: "50000"    
+        detail  : 
+          type: string
+          example: "Penjualan Mainan"    
+#Revenue Schemas Respons
+    revenueGetResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          user_id:
+            type: integer
+          revenue:
+            type: integer
+          detail:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - id
+          - user_id
+          - revenue
+          - detail
+          - createdAt
+          - updatedAt
+    revenuePutResponses:
+      type: object
+      properties:
+        message:
+          type: string
+          example: " Update Succesfully "
+      additionalProperties: false
+      required:
+        - message
+    revenueDelResponses:
+      type: object
+      properties:
+        message:
+          type: string
+          example: " Deleted Succesfully "
+      additionalProperties: false
+      required:
+        - message
+
+  #Expense Schemas
+    expensePost :  
+      type: object
+      properties:
+        user_id : 
+          type: integer
+          example: "1"
+        expense  : 
+          type: integer
+          example: "50000"    
+        detail  : 
+          type: string
+          example: "Penjualan Mainan"  
+    expensePut :  
+      type: object
+      properties:
+        expense  : 
+          type: integer
+          example: "50000"    
+        detail  : 
+          type: string
+          example: "Penjualan Mainan"    
+#Expense Schemas Respons
+    expensePutResponses:
+      type: object
+      properties:
+        message:
+          type: string
+          example: " Update Succesfully "
+      additionalProperties: false
+      required:
+        - message
+    expenseDelResponses:
+      type: object
+      properties:
+        message:
+          type: string
+          example: " Deleted Succesfully "
+      additionalProperties: false
+      required:
+        - message
+    expenseGetRespons:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          user_id:
+            type: integer
+          expense:
+            type: integer
+          detail:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - id
+          - user_id
+          - expense
+          - detail
           - createdAt
           - updatedAt
