@@ -2,13 +2,11 @@ const express = require("express");
 const router = express.Router();
 const categoryRouter = require("./category");
 const customerRouter = require("./customer");
-const revenueRouter = require("./revenue");
-const expenseRouter = require("./expense");
 const usersRouter = require("./users")
 const productRouter = require("./product")
 const expenseRouter = require("./expense");
 const orderRouter = require("./order");
-const orderDetailRouter = require("./orderProduct");
+const orderProductRouter = require("./orderProduct");
 const revenueRouter = require("./revenue");
 const vendorRouter = require("./vendor");
 const warehouseRouter = require("./warehouse");
@@ -21,11 +19,11 @@ router.use('/categories', categoryRouter);
 router.use('/customers', customerRouter);
 router.use('/expenses', expenseRouter);
 router.use('/orders', orderRouter);
-router.use('/order-details', orderDetailRouter);
+router.use('/orderproducts', orderProductRouter);
 router.use('/revenues', revenueRouter);
 router.use('/vendors', vendorRouter);
 router.use('/warehouses', warehouseRouter);
 router.use('/warehousestocks', warehouseStockRouter);
-router.use('/productVendors', productVendorRouter);
+router.use('/productvendors', productVendorRouter);
 
 module.exports = router;

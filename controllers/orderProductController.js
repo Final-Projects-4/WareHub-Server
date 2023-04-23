@@ -8,7 +8,6 @@ class OrderProductController {
       const orderProduct = await OrderProduct.create({ product_id, order_id, price, quantity });
       res.status(201).json(orderProduct);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
