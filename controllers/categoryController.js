@@ -5,9 +5,8 @@ class CategoryController {
     try {
       const data = await Category.findAll({});
       res.status(200).json(data);
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+    } catch (err) {
+      next(err);
     }
   };
   static getById = async (req, res, next) => {
@@ -19,10 +18,8 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+    } catch (err) {
+      next(err);
     }
   };
   static getByName = async (req, res, next) => {
@@ -34,10 +31,8 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(err);
     }
   };
   static postAdd = async (req, res, next) => {
@@ -48,10 +43,8 @@ class CategoryController {
         description,
       });
       res.status(200).json(data);
-      console.log(data);
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(err);
     }
   };
   static delete = async (req, res, next) => {
@@ -63,10 +56,8 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(err);
     }
   };
   static update = async (req, res, next) => {
@@ -84,10 +75,8 @@ class CategoryController {
         }
       );
       res.status(200).json(data);
-      console.log(data);
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "ada eror" });
+      next(err);
     }
   };
 }
