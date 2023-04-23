@@ -6,7 +6,7 @@ class CategoryController {
       const data = await Category.findAll({});
       res.status(200).json(data);
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -19,9 +19,9 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -34,9 +34,9 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -48,9 +48,9 @@ class CategoryController {
         description,
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -63,9 +63,9 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
@@ -84,9 +84,9 @@ class CategoryController {
         }
       );
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({ message: "ada eror" });
     }
   };
