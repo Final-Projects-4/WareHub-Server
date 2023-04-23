@@ -17,7 +17,7 @@ class CustomerController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
      next(err);
     }
@@ -31,7 +31,7 @@ class CustomerController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
      next(err);
     }
@@ -49,7 +49,7 @@ class CustomerController {
         company,
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
      next(err);
     }
@@ -63,7 +63,7 @@ class CustomerController {
         },
       });
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
      next(err);
     }
@@ -89,7 +89,7 @@ class CustomerController {
         }
       );
       res.status(200).json(data);
-      console.log(data);
+      
     } catch (error) {
      next(err);
     }

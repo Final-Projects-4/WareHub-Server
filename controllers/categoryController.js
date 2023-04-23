@@ -18,6 +18,7 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
+
     } catch (err) {
       next(err);
     }
@@ -56,6 +57,7 @@ class CategoryController {
         },
       });
       res.status(200).json(data);
+
     } catch (error) {
       next(err);
     }
