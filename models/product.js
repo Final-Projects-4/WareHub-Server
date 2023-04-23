@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsToMany(models.Category,{through: models.ProductCategory, foreignKey: 'product_id'})
       Product.belongsToMany(models.Warehouse,{through: models.WarehouseStock, foreignKey: 'product_id'})
       Product.belongsTo(models.User, {foreignKey: 'user_id'})
-      Product.hasMany(models.OrderDetail,{foreignKey: 'product_id'})
+      Product.hasMany(models.OrderProduct,{foreignKey: 'product_id'})
 
 
     }

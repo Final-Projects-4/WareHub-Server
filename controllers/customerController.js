@@ -5,8 +5,7 @@ class CustomerController {
       const data = await Customer.findAll({});
       res.status(200).json(data);
     } catch (error) {
-      
-      res.status(400).json({ message: "ada eror" });
+     next(err);
     }
   };
   static getById = async (req, res, next) => {
@@ -20,8 +19,7 @@ class CustomerController {
       res.status(200).json(data);
       
     } catch (error) {
-      
-      res.status(400).json({ message: "ada eror" });
+     next(err);
     }
   };
   static getByEmail = async (req, res, next) => {
@@ -35,8 +33,7 @@ class CustomerController {
       res.status(200).json(data);
       
     } catch (error) {
-      
-      res.status(400).json({ message: "ada eror" });
+     next(err);
     }
   };
   static postAdd = async (req, res, next) => {
@@ -54,8 +51,7 @@ class CustomerController {
       res.status(200).json(data);
       
     } catch (error) {
-      
-      res.status(400).json({ message: "ada eror" });
+     next(err);
     }
   };
   static delete = async (req, res, next) => {
@@ -69,8 +65,7 @@ class CustomerController {
       res.status(200).json(data);
       
     } catch (error) {
-      
-      res.status(400).json({ message: "ada eror" });
+     next(err);
     }
   };
   static update = async (req, res, next) => {
@@ -96,8 +91,7 @@ class CustomerController {
       res.status(200).json(data);
       
     } catch (error) {
-      
-      res.status(400).json({ message: "ada eror" });
+     next(err);
     }
   };
 }

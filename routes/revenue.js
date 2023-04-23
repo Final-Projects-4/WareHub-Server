@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const RevenueController = require("../controllers/revenueController.js");
+const RevenueController = require('../controllers/revenueController');
 
-router.get("/", RevenueController.findAll);
-router.get("/:id", RevenueController.findOne);
-router.post("/", RevenueController.create);
-router.delete("/:id", RevenueController.delete);
-router.put("/:id", RevenueController.update);
+router.post('/', RevenueController.create);
+router.get('/', RevenueController.getAll);
+router.get('/:id', RevenueController.getOne);
+router.put('/:id', RevenueController.update);
+router.delete('/:id', RevenueController.delete);
 
 module.exports = router;
