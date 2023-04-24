@@ -3,9 +3,8 @@ const { Op } = require('sequelize');
 
 class ProductController {
   static async create(req, res, next) {
-    const { name, price, weight, size, description, SKU, user_id } = req.body;
-    const { vendor_id, warehouse_id} = req.query
-    const quantity = req.body.quantity;
+    const { name, price, weight, size, description, SKU, user_id, vendor_id, warehouse_id, quantity } = req.body;
+    
     
 
     try {
@@ -43,7 +42,7 @@ class ProductController {
 
       res.status(201).json(product);
     } catch (err) {
-      console.log(err);
+      console.log(err.name);
       next(err);
     }
   }
