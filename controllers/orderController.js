@@ -1,35 +1,43 @@
-const { Order, Customer, User, OrderProduct, sequelize, Revenue } = require('../models');
+const { Order, Customer, User, OrderProduct, Product, sequelize, Revenue } = require('../models');
 
 class OrderController {
   static async create(req, res, next) {
-    const { name, customer_id, warehouse_id, user_id, product_id, price, quantity } = req.body;
+    const { name, customer_id, warehouse_id, user_id, order_products} = req.body;
 
     try {
-      const order = await sequelize.transaction(async (t) => {
+      // const order = await sequelize.transaction(async (t) => {
         const createdOrder = await Order.create(
-          { name, customer_id, warehouse_id, user_id },
-          { transaction: t }
+          { name, customer_id, warehouse_id, user_id }
+          // { transaction: t }
         );
+      
+      let orderProductArray = []
+      let totalPrice = 0;
+      for(let i = 0; i < order_products.length; i++) {
+        const currentProduct = order_products[i]
 
-        const createdOrderDetail = await OrderProduct.create(
-          {
-            product_id,
-            order_id: createdOrder.id,
-            price: price,
-            quantity: quantity,
-            detail: `details of ${createdOrder.id}`,
-          },
-          { transaction: t }
-        );
+        //validate product dulu
+        let createdOP = await OrderProduct.create({
+          product_id: currentProduct.product_id,
+          order_id: createdOrder.id,
+          price: currentProduct.price,
+          quantity: currentProduct.quantity
+        })
 
-        await Revenue.create(
-          {
-            user_id,
-            revenue: createdOrderDetail.price,
-            detail: `revenue from order detail ${createdOrderDetail.id}`,
-          },
-          { transaction: t }
-        );
+        totalPrice += currentProduct.price;
+
+        orderProductArray.push(createdOP)
+      }
+
+      await createdOrder.update({total_price: totalPrice})
+      await Revenue.create(
+        {
+          user_id,
+          revenue: totalPrice,
+          detail: `revenue from order detail ${createdOrder.id}`,
+        }
+          // ,{ transaction: t }
+      );
 
         // if (warehouse_id) {
         //   await WarehouseStock.create(
@@ -45,10 +53,7 @@ class OrderController {
         //   );
         // }
 
-        return createdOrder;
-      });
-
-      res.status(201).json(order);
+      res.status(201).json({...(createdOrder.dataValues), order_products: orderProductArray});
     } catch (err) {
       console.log(err);
       next(err);
@@ -58,7 +63,7 @@ class OrderController {
   static async getAll(req, res, next) {
     try {
       const data = await Order.findAll({
-        include: [Customer, User, OrderDetail],
+        include: [Customer, User, OrderProduct],
       });
       res.status(200).json(data);
     } catch (err) {
@@ -74,7 +79,7 @@ class OrderController {
         where: {
           id,
         },
-        include: [Customer, User, OrderDetail],
+        include: [Customer, User, Product],
       });
 
       if (data) {
