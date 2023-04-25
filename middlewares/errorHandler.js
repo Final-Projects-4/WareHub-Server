@@ -16,6 +16,18 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({
         message: "Unique Constraint Error"
       })
+    } else if(err.name === "productPriceError") {
+      res.status(400).json({
+        message: "Product Price Error"
+      })
+    } else if(err.name === "emptyStock") {
+    res.status(400).json({
+      message: "Empty Stock"
+    })
+    } else if(err.name === "insufficient") {
+    res.status(400).json({
+      message: "Insufficient Stock at Warehouse"
+    })
     } else {
       res.status(500).json({
         message: "Internal Server Error"

@@ -70,6 +70,78 @@ class WarehouseStockController {
     }
   }
   
+  static async getAll(req, res, next) {
+    try {
+      const data = await WarehouseStock.findAll({
+        
+      });
+      
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      throw { name: 'ErrorNotFound' };
+    }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async delete(req, res, next) {
+    const { id } = req.params;
+    
+    try {
+      const deletedWarehouseStock = await WarehouseStock.destroy({ 
+        where: { id: id } 
+      });
+      
+      if (deletedWarehouseStock === 0) {
+        throw { name: 'ErrorNotFound' };
+      }
+      
+      res.status(200).json({ message: 'Warehouse stock deleted successfully' });
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+  
+  static async update(req, res, next) {
+    const { id } = req.params;
+    const { quantity } = req.body;
+    
+    try {
+      const [updatedWarehouseStockCount, updatedWarehouseStock] = await WarehouseStock.update(
+        { quantity: quantity },
+        { returning: true, where: { id: id } }
+      );
+      
+      if (updatedWarehouseStockCount === 0) {
+        throw { name: 'ErrorNotFound' };
+      }
+      
+      res.status(200).json(updatedWarehouseStock[0]);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+  
+  static async getOne(req, res, next) {
+    const { id } = req.params;
+    
+    try {
+      const warehouseStock = await WarehouseStock.findByPk(id);
+      
+      if (!warehouseStock) {
+        throw { name: 'ErrorNotFound' };
+      }
+      
+      res.status(200).json(warehouseStock);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
 }
 
 module.exports = WarehouseStockController;

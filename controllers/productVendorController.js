@@ -22,7 +22,23 @@ class ProductVendorController {
     }
   }
 
-  static async read(req, res, next) {
+  static async getAll(req, res, next) {
+    try {
+      const data = await ProductVendor.findAll({
+        
+      });
+      
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      throw { name: 'ErrorNotFound' };
+    }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getOne(req, res, next) {
     const { id } = req.params;
 
     try {

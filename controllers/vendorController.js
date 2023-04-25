@@ -66,9 +66,9 @@ class VendorController {
       const { id } = req.params;
       const deletedRowsCount = await Vendor.destroy({ where: { id } });
       if (deletedRowsCount !== 1) {
-        throw new Error('Vendor not found');
+        throw {message: 'ErrorNotFound'};
       }
-      res.status(204).send();
+      res.status(204).json({message: "Deleted"});
     } catch (err) {
       console.log(err);
       next(err);

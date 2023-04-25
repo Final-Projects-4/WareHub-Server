@@ -47,7 +47,6 @@ class ProductController {
     }
   }
 
-
   static async getAll(req, res, next) {
     try {
       const { count, rows } = await Product.findAndCountAll(filtering(req.query));
@@ -57,22 +56,20 @@ class ProductController {
     }
   }
   
-
   static async getOne(req, res, next) {
+
     const { id } = req.params;
 
     try {
       const data = await Product.findOne({
+        include: [ Vendor, Warehouse ],
         where: {
           id,
         },
       });
 
-      if (data) {
-        res.status(200).json(data);
-      } else {
-        throw { name: 'ErrorNotFound' };
-      }
+      res.status(200).json(data);
+      
     } catch (err) {
       next(err);
     }
@@ -87,7 +84,7 @@ class ProductController {
         { where: { id }, returning: true }
       );
       if (updatedRowsCount !== 1) {
-        throw new Error('Product not found');
+        throw {name: "ErrorNotFound"};
       }
       res.status(200).json(updatedProduct);
     } catch (err) {
@@ -97,18 +94,40 @@ class ProductController {
   }
 
   static async delete(req, res, next) {
+    const { id } = req.params;
+  
     try {
-      const { id } = req.params;
-      const deletedRowsCount = await Product.destroy({ where: { id } });
-      if (deletedRowsCount !== 1) {
-        throw new Error('Product not found');
-      }
-      res.status(204).send();
+      const deletedRowsCount = await sequelize.transaction(async (t) => {
+        // Delete related expenses
+        await Expense.destroy({
+          where: {
+            detail: `Expense of ${id}`,
+          },
+          transaction: t,
+        });
+  
+        //delete the product
+        const deletedProductRowsCount = await Product.destroy({
+          where: {
+            id,
+          },
+          transaction: t,
+        });
+  
+        if (deletedProductRowsCount !== 1) {
+          throw { name: "ErrorNotFound" };
+        }
+  
+        return deletedProductRowsCount;
+      });
+  
+      res.status(200).send({ message: 'Product Deleted' });
     } catch (err) {
       console.log(err);
       next(err);
     }
   }
+  
 }
 
 function filtering(query) {
