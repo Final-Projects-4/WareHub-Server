@@ -72,6 +72,7 @@ class OrderController {
       await t.commit();
   
       res.status(201).json({ ...(createdOrder.dataValues), order_products: orderProductArray });
+
     } catch (err) {
       await t.rollback();
       next(err);
