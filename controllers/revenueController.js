@@ -4,15 +4,15 @@ const { Revenue, User } = require('../models');
 class RevenueController {
   static async create(req, res, next) {
     try {
-      const { userId, revenue, detail } = req.body;
+      const { user_id, revenue, detail } = req.body;
 
       // check if user exists
-      const user = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ where: { id: user_id } });
       if (!user) {
         throw { name: 'ErrorNotFound', message: 'User not found' };
       }
 
-      const revenueData = await Revenue.create({ user_id: userId, revenue, detail });
+      const revenueData = await Revenue.create({ user_id: user_id, revenue, detail });
       res.status(201).json(revenueData);
     } catch (err) {
       console.log(err);
@@ -53,16 +53,16 @@ class RevenueController {
   static async update(req, res, next) {
     try {
       const { id } = req.params;
-      const { userId, revenue, detail } = req.body;
+      const { user_id, revenue, detail } = req.body;
 
       // check if user exists
-      const user = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ where: { id: user_id } });
       if (!user) {
         throw { name: 'ErrorNotFound', message: 'User not found' };
       }
 
       const [updatedRowsCount, [updatedRevenueData]] = await Revenue.update(
-        { user_id: userId, revenue, detail },
+        { user_id: user_id, revenue, detail },
         { where: { id }, returning: true }
       );
       if (updatedRowsCount !== 1) {
@@ -82,7 +82,7 @@ class RevenueController {
       if (deletedRowsCount !== 1) {
         throw { name: 'ErrorNotFound', message: 'Revenue not found' };
       }
-      res.status(204).send();
+      res.status(204).json({message: "Deleted"});
     } catch (err) {
       console.log(err);
       next(err);

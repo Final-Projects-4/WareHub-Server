@@ -23,20 +23,8 @@ class CategoryController {
       next(err);
     }
   };
-  static getByName = async (req, res, next) => {
-    const { name } = req.params;
-    try {
-      const data = await Category.findOne({
-        where: {
-          name,
-        },
-      });
-      res.status(200).json(data);
-    } catch (error) {
-      next(err);
-    }
-  };
-  static postAdd = async (req, res, next) => {
+  
+  static create = async (req, res, next) => {
     const { name, description } = req.body;
     try {
       const data = await Category.create({
@@ -44,7 +32,7 @@ class CategoryController {
         description,
       });
       res.status(200).json(data);
-    } catch (error) {
+    } catch (err) {
       next(err);
     }
   };
@@ -56,19 +44,20 @@ class CategoryController {
           id,
         },
       });
-      res.status(200).json(data);
+      res.status(200).json({message: "Deleted"});
 
-    } catch (error) {
+    } catch (err) {
       next(err);
     }
   };
   static update = async (req, res, next) => {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, description } = req.body;
     try {
       const data = await Category.update(
         {
           name: name,
+          description: description
         },
         {
           where: {
@@ -77,7 +66,7 @@ class CategoryController {
         }
       );
       res.status(200).json(data);
-    } catch (error) {
+    } catch (err) {
       next(err);
     }
   };

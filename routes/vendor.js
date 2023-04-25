@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const VendorController = require('../controllers/vendorController');
 
-router.post('/', VendorController.create);
+router.post('/create', VendorController.create);
 router.get('/', VendorController.getAll);
 router.get('/:id', VendorController.getOne);
 router.put('/:id', VendorController.update);

@@ -98,7 +98,7 @@ class UserController {
       if (deletedRowsCount !== 1) {
         throw {name: 'InvalidCredential'};
       }
-      res.status(204).send();
+      res.status(200).json({ message: 'User Deleted' });
     } catch (err) {
       console.log(err);
       next(err);

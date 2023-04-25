@@ -51,7 +51,7 @@ class ExpenseController {
         { where: { id }, returning: true }
       );
       if (updatedRowsCount !== 1) {
-        throw new Error('Expense not found');
+        throw { name: 'ErrorNotFound' };
       }
       res.status(200).json(updatedExpense);
     } catch (err) {
@@ -65,9 +65,9 @@ class ExpenseController {
       const { id } = req.params;
       const deletedRowsCount = await Expense.destroy({ where: { id } });
       if (deletedRowsCount !== 1) {
-        throw new Error('Expense not found');
+        throw { name: 'ErrorNotFound' };
       }
-      res.status(204).send();
+      res.status(204).json({message: "Deleted"});
     } catch (err) {
       console.log(err);
       next(err);

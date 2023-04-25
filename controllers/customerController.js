@@ -4,10 +4,11 @@ class CustomerController {
     try {
       const data = await Customer.findAll({});
       res.status(200).json(data);
-    } catch (error) {
+    } catch (err) {
      next(err);
     }
   };
+
   static getById = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -18,10 +19,11 @@ class CustomerController {
       });
       res.status(200).json(data);
       
-    } catch (error) {
+    } catch (err) {
      next(err);
     }
   };
+
   static getByEmail = async (req, res, next) => {
     const { email } = req.params;
     try {
@@ -32,11 +34,12 @@ class CustomerController {
       });
       res.status(200).json(data);
       
-    } catch (error) {
+    } catch (err) {
      next(err);
     }
   };
-  static postAdd = async (req, res, next) => {
+
+  static create = async (req, res, next) => {
     const { user_id, first_name, last_name, email, address, company } =
       req.body;
     try {
@@ -50,10 +53,11 @@ class CustomerController {
       });
       res.status(200).json(data);
       
-    } catch (error) {
+    } catch (err) {
      next(err);
     }
   };
+
   static delete = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -62,12 +66,13 @@ class CustomerController {
           id,
         },
       });
-      res.status(200).json(data);
+      res.status(200).json({message: "Customer Deleted"});
       
-    } catch (error) {
+    } catch (err) {
      next(err);
     }
   };
+
   static update = async (req, res, next) => {
     const { id } = req.params;
     const { user_id, first_name, last_name, email, address, company } =
@@ -88,9 +93,9 @@ class CustomerController {
           },
         }
       );
-      res.status(200).json(data);
+      res.status(200).json({message: "Successfuly edited"});
       
-    } catch (error) {
+    } catch (err) {
      next(err);
     }
   };
