@@ -9,6 +9,7 @@ class CustomerController {
       next(error);
     }
   };
+
   static getById = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -28,6 +29,7 @@ class CustomerController {
       next(error);
     }
   };
+
   static getByEmail = async (req, res, next) => {
     const { email } = req.params;
     try {
@@ -47,7 +49,8 @@ class CustomerController {
       next(error);
     }
   };
-  static postAdd = async (req, res, next) => {
+
+  static create = async (req, res, next) => {
     const { user_id, first_name, last_name, email, address, company } =
       req.body;
     try {
@@ -66,6 +69,7 @@ class CustomerController {
       next(error);
     }
   };
+
   static delete = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -84,6 +88,7 @@ class CustomerController {
       next(error);
     }
   };
+
   static update = async (req, res, next) => {
     const { id } = req.params;
     const { user_id, first_name, last_name, email, address, company } =

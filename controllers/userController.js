@@ -1,7 +1,6 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const errorHandler = require('../middlewares/errorHandler');
 
 class UserController {
   static async register(req, res, next) {
@@ -83,7 +82,7 @@ class UserController {
         { where: { id }, returning: true }
       );
       if (updatedRowsCount !== 1) {
-        throw new Error('User not found');
+        throw {name: 'InvalidCredential'};
       }
       res.status(200).json(updatedUser);
     } catch (err) {
@@ -97,9 +96,9 @@ class UserController {
       const { id } = req.params;
       const deletedRowsCount = await User.destroy({ where: { id } });
       if (deletedRowsCount !== 1) {
-        throw new Error('User not found');
+        throw {name: 'InvalidCredential'};
       }
-      res.status(204).send();
+      res.status(200).json({ message: 'User Deleted' });
     } catch (err) {
       console.log(err);
       next(err);

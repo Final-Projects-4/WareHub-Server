@@ -86,11 +86,12 @@ class CategoryController {
   };
   static update = async (req, res, next) => {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, description } = req.body;
     try {
       const [rows, [data]] = await Category.update(
         {
           name: name,
+          description: description
         },
         {
           where: {
