@@ -3,7 +3,7 @@ info:
   title: 'API WareHub Server'
   description: >-
     "Dokumentasi WareHub API"
-  version: '1.0'
+  version: '1.1'
 servers:
   - url: http://localhost:3000
 tags:
@@ -26,7 +26,7 @@ tags:
   - name: User
     description : User Api
 paths:
-#Users Api
+#Users
   /users/:
     get:
       tags:
@@ -138,13 +138,37 @@ paths:
       tags:
         - "Products"
       description: 'Get All Products Data'
+      parameters: 
+        - in : path
+          name : category_id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Revenue to get
       responses:
         '200':
           description: OK
           content: 
             application/json: 
               schema: 
-                $ref: '#/components/schemas/productsGetRespons'  
+                $ref: '#/components/schemas/ProductGetAllRespons'  
+  /products/create:
+    post:
+      tags:
+        - "Product"
+      description: 'Add New Product'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/productPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/productPostRespons'
   /products/{id}:
     get:
       tags:
@@ -164,7 +188,7 @@ paths:
           content:
             application/json:
               schema :
-                $ref: '#/components/schemas/productsGetRespons'
+                $ref: '#/components/schemas/ProductGetIdRespons'
     put:
       tags:
         - "Products"
@@ -205,18 +229,7 @@ paths:
         '200':
           description: OK
 #Customers
-  /customers/:
-    get:
-      tags:
-        - "Customers"
-      description: 'Get All Customers Data'
-      responses:
-        '200':
-          description: OK
-          content: 
-            application/json: 
-              schema: 
-                $ref: '#/components/schemas/customersGetRespons'  
+  /customers/create:
     post:
       tags:
         - "Customers"
@@ -233,6 +246,18 @@ paths:
             application/json: 
               schema: 
                 $ref: '#/components/schemas/customersPostRespons'  
+  /customers/:
+    get:
+      tags:
+        - "Customers"
+      description: 'Get All Customers Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/customersGetRespons'  
   /customers/{id}:
     get:
       tags:
@@ -305,18 +330,7 @@ paths:
               schema :
                 $ref: '#/components/schemas/eror'
 #categories
-  /categories/:
-    get:
-      tags:
-        - "Category"
-      description: 'Get All Customers Data'
-      responses:
-        '200':
-          description: OK
-          content: 
-            application/json: 
-              schema: 
-                $ref: '#/components/schemas/categoriesGetRespons'  
+  /categories/create:
     post:
       tags:
         - "Category"
@@ -326,6 +340,18 @@ paths:
           application/json: 
             schema: 
               $ref: '#/components/schemas/categoriesPost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/categoriesGetRespons' 
+  /categories/:
+    get:
+      tags:
+        - "Category"
+      description: 'Get All Customers Data'
       responses:
         '200':
           description: OK
@@ -405,18 +431,7 @@ paths:
               schema :
                 $ref: '#/components/schemas/eror'
 #Revenue
-  /revenue/:
-    get:
-      tags:
-        - "Revenue"
-      description: 'Get All Revenue Data'
-      responses:
-        '200':
-          description: OK
-          content: 
-            application/json: 
-              schema: 
-                $ref: '#/components/schemas/revenueGetResponse'  
+  /revenue/create:
     post:
       tags:
         - "Revenue"
@@ -426,6 +441,18 @@ paths:
           application/json: 
             schema: 
               $ref: '#/components/schemas/revenuePost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/revenueGetResponse'  
+  /revenue/:
+    get:
+      tags:
+        - "Revenue"
+      description: 'Get All Revenue Data'
       responses:
         '200':
           description: OK
@@ -509,18 +536,7 @@ paths:
               schema :
                 $ref: '#/components/schemas/eror'
 #Expense
-  /expense/:
-    get:
-      tags:
-        - "Expense"
-      description: 'Get All Revenue Data'
-      responses:
-        '200':
-          description: OK
-          content: 
-            application/json: 
-              schema: 
-                $ref: '#/components/schemas/expenseGetRespons'  
+  /expense/create:
     post:
       tags:
         - "Expense"
@@ -530,6 +546,18 @@ paths:
           application/json: 
             schema: 
               $ref: '#/components/schemas/expensePost'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/expenseGetRespons' 
+  /expense/:
+    get:
+      tags:
+        - "Expense"
+      description: 'Get All Revenue Data'
       responses:
         '200':
           description: OK
@@ -769,6 +797,39 @@ components:
         SKU  :
           type: string
           example: "IndM980"     
+    productPost :  
+      type: object
+      properties:
+        name : 
+          type: string
+          example: "Indomie Bakar"
+        price : 
+          type: integer
+          example: "35000"
+        weight : 
+          type: string
+          example: "10 Gram"
+        size : 
+          type: string
+          example: "1 Pcs"
+        description :
+          type: string
+          example: "Mie terenak sepanjang masa"      
+        SKU  :
+          type: string
+          example: "IndM980"     
+        user_id  :
+          type: integer
+          example: "2"     
+        quantity  :
+          type: integer
+          example: "1000"     
+        vendor_id  :
+          type: integer
+          example: "1"     
+        warehouse_id  :
+          type: integer
+          example: "1"     
   #Product Schemas Respons
     productsGetRespons:
       type: array
@@ -1089,3 +1150,256 @@ components:
           - detail
           - createdAt
           - updatedAt
+    ProductGetAllRespons:
+      type: object
+      properties:
+        count:
+          type: integer
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              user_id:
+                type: integer
+              name:
+                type: string
+              price:
+                type: integer
+              weight:
+                type: string
+              size:
+                type: string
+              description:
+                type: string
+              SKU:
+                type: string
+              Categories:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+                    ProductCategory:
+                      type: object
+                      properties:
+                        product_id:
+                          type: integer
+                        category_id:
+                          type: integer
+                        name:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                      required:
+                        - product_id
+                        - category_id
+                        - name
+                        - createdAt
+                        - updatedAt
+                      additionalProperties: false
+              Warehouses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    city:
+                      type: string
+                    address:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+                    WarehouseStock:
+                      type: object
+                      properties:
+                        product_id:
+                          type: integer
+                        warehouse_id:
+                          type: integer
+                        quantity:
+                          type: integer
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                      required:
+                        - product_id
+                        - warehouse_id
+                        - quantity
+                        - createdAt
+                        - updatedAt
+                      additionalProperties: false
+              Vendors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    country:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+                    ProductVendor:
+                      type: object
+                      properties:
+                        product_id:
+                          type: integer
+                        vendor_id:
+                          type: integer
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                      required:
+                        - product_id
+                        - vendor_id
+                        - createdAt
+                        - updatedAt
+                      additionalProperties: false
+                  required:
+                    - id
+                    - name
+                    - country
+                    - createdAt
+                    - updatedAt
+                    - ProductVendor
+      additionalProperties: false
+      required:
+        - count
+        - rows
+    ProductGetIdRespons:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: integer
+        weight:
+          type: string
+        size:
+          type: string
+        description:
+          type: string
+        SKU:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        Vendors:
+          type: array
+          items: {}
+        Warehouses:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              city:
+                type: string
+              address:
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              WarehouseStock:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                  warehouse_id:
+                    type: integer
+                  quantity:
+                    type: integer
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                required:
+                  - product_id
+                  - warehouse_id
+                  - quantity
+                  - createdAt
+                  - updatedAt
+                additionalProperties: false
+      additionalProperties: false
+      required:
+        - id
+        - user_id
+        - name
+        - price
+        - weight
+        - size
+        - description
+        - SKU
+        - createdAt
+        - updatedAt
+        - Vendors
+        - Warehouses
+    productPostRespons:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: integer
+        weight:
+          type: string
+        size:
+          type: string
+        description:
+          type: string
+        SKU:
+          type: string
+        user_id:
+          type: integer
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - price
+        - weight
+        - size
+        - description
+        - SKU
+        - user_id
+        - updatedAt
+        - createdAt
