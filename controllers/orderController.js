@@ -54,7 +54,7 @@ class OrderController {
           { transaction: t }
         );
   
-        totalPrice += currentProduct.price;
+        totalPrice += currentProduct.price * currentProduct.quantity;
         orderProductArray.push(createdOP);
       }
   

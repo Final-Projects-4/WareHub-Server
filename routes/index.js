@@ -12,8 +12,10 @@ const vendorRouter = require("./vendor");
 const warehouseRouter = require("./warehouse");
 const warehouseStockRouter = require("./warehousestock")
 const productVendorRouter = require("./productVendor")
+const auth = require('../middlewares/auth')
 
 router.use('/users', usersRouter);
+router.use(auth);
 router.use('/products', productRouter);
 router.use('/categories', categoryRouter);
 router.use('/customers', customerRouter);

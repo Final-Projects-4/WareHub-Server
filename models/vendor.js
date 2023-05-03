@@ -12,9 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Vendor.belongsToMany(models.Product,{through: models.ProductVendor, foreignKey: 'vendor_id'})
+      Vendor.belongsTo(models.User,{foreignKey: 'user_id'})
     }
   }
   Vendor.init({
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

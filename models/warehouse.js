@@ -13,9 +13,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Warehouse.belongsToMany(models.Product, {through: models.WarehouseStock, foreignKey: 'warehouse_id'})
       Warehouse.hasMany(models.Order, {foreignKey: 'warehouse_id'})
+      Warehouse.belongsTo(models.User,{foreignKey: 'user_id'})
     }
   }
   Warehouse.init({
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

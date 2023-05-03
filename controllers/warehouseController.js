@@ -74,6 +74,17 @@ class WarehouseController {
       next(err);
     }
   }
+
+}
+
+function filtering(user) {
+  let result = {
+    where: {
+      user_id: user.id
+    }
+  }
+
+  return result;
 }
 
 module.exports = WarehouseController;

@@ -1,23 +1,25 @@
-const { sequelize, Product, Category, Warehouse, Vendor, Expense, ProductVendor, WarehouseStock } = require('../models');
+const { sequelize, Product, Category, Warehouse, Vendor, Expense, ProductCategory,ProductVendor, WarehouseStock } = require('../models');
 const { Op } = require('sequelize');
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 1;
 
 class ProductController {
   static async create(req, res, next) {
-    const { name, price, weight, size, description, SKU, user_id, vendor_id, warehouse_id, quantity } = req.body;
+    const { name, price, weight, size, description, SKU,vendor_id, warehouse_id, quantity,category_id } = req.body;
     
     
 
     try {
       const product = await sequelize.transaction(async (t) => {
         const createdProduct = await Product.create(
-          { name, price, weight, size, description, SKU, user_id},
+          { name, price, weight, size, description, SKU, user_id: req.user.id},
           { transaction: t }
         );
 
         await Expense.create(
           {
-            user_id: user_id,
-            expense: price,
+            user_id: req.user.id,
+            expense: price * quantity,
             detail: `Expense of ${createdProduct.id}`,
           },
           { transaction: t }
@@ -37,6 +39,13 @@ class ProductController {
           );
         }
 
+        if (category_id) {
+          await ProductCategory.create(
+            { product_id: createdProduct.id, category_id },
+            { transaction: t }
+          );
+        }
+
         return createdProduct;
       });
 
@@ -49,8 +58,17 @@ class ProductController {
 
   static async getAll(req, res, next) {
     try {
-      const { count, rows } = await Product.findAndCountAll(filtering(req.query));
-      res.status(200).json({ count, rows });
+      const {page, limit} = req.query;
+      const { count, rows } = await Product.findAndCountAll(filtering(req.query, req.user));
+      const currentPage = page ? +page : DEFAULT_PAGE;
+      const totalPages = limit ? Math.ceil(count / limit) : Math.ceil(count / DEFAULT_LIMIT);
+      const result = {
+        totalItems: count,
+        products: rows,
+        totalPages,
+        currentPage
+      }
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }
@@ -130,7 +148,7 @@ class ProductController {
   
 }
 
-function filtering(query) {
+function filtering(query, user) {
   let {category_id,q,warehouse_id,vendor_id, limit, page, sort} = query;
   let offset = 0;
 
@@ -142,18 +160,21 @@ function filtering(query) {
   let joinBuild = []
 
   let queryCategory = {
-      model: Category,
-      where: {}
+    model: Category,
+    where: {},
+    required: true
   }
 
   let queryWarehouse = {
     model: Warehouse,
-    where: {}
+    where: {},
+    required: true
   }
 
   let queryVendor = {
     model: Vendor,
-    where: {}
+    where: {},
+    required: true
   }
 
   if(category_id) {
@@ -182,9 +203,12 @@ function filtering(query) {
   
   let result = {
     include: joinBuild,
-    where: {},
+    where: {
+      user_id: user.id
+    },
     limit: limit,
     offset: offset,
+    distinct: true
   };
 
   if(q) {

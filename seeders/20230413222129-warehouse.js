@@ -14,7 +14,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          name: "Gudang Barang Depok 2",
+          name: "Gudang Depok 2",
           city: "Depok",
           address: "Jl Penghasahan No 10",
           createdAt: new Date(),
