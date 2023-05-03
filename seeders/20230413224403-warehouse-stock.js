@@ -14,6 +14,13 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          product_id: 1,
+          warehouse_id: 2,
+          quantity: 100,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           product_id: 2,
           warehouse_id: 2,
           quantity: 100,

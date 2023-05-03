@@ -7,30 +7,35 @@ module.exports = {
       "Vendors",
       [
         {
+          user_id: 1,
           name: "Apple",
           country: "Indonesia",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          user_id: 1,
           name: "Samsung",
           country: "Canada",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          user_id: 1,
           name: "Nokia",
           country: "Brazil",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          user_id: 2,
           name: "Blackberry",
           country: "Indonesia",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          user_id: 2,
           name: "Motorolla",
           country: "China",
           createdAt: new Date(),
