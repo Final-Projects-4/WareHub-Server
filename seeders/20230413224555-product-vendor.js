@@ -13,7 +13,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          product_id: 1,
+          product_id: 2,
           vendor_id: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -21,6 +21,12 @@ module.exports = {
         {
           product_id: 3,
           vendor_id: 3,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          product_id: 4,
+          vendor_id: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         }

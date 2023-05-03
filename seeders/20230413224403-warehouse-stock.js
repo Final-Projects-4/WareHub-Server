@@ -9,14 +9,28 @@ module.exports = {
         {
           product_id: 1,
           warehouse_id: 1,
-          quantity: 10000,
+          quantity: 100,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           product_id: 2,
           warehouse_id: 2,
-          quantity: 20000,
+          quantity: 100,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          product_id: 3,
+          warehouse_id: 1,
+          quantity: 100,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          product_id: 4,
+          warehouse_id: 2,
+          quantity: 100,
           createdAt: new Date(),
           updatedAt: new Date(),
         }

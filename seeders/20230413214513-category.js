@@ -14,13 +14,13 @@ module.exports = {
         },
         {
           name: "Elektronik",
-          description: " ",
+          description: " 123",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           name: "Film",
-          description: " ",
+          description: " 123",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

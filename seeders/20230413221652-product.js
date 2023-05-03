@@ -9,7 +9,7 @@ module.exports = {
         {
           user_id: 1,
           name: "Keripik Tela",
-          price: 10000,
+          price: 100,
           weight: "1 Kg",
           size: "20 Cm",
           description: "Keripik tela curah",
@@ -20,7 +20,7 @@ module.exports = {
         {
           user_id: 2,
           name: "Tomatoes - Vine Ripe, Yellow",
-          price: 3000,
+          price: 200,
           weight: "100 grams",
           size: "1 Pcs",
           description:
@@ -32,7 +32,7 @@ module.exports = {
         {
           user_id: 1,
           name: "Pork - Hock And Feet Attached",
-          price: 10000,
+          price: 300,
           weight: "100 grams",
           size: "1 Pcs",
           description:
@@ -44,7 +44,7 @@ module.exports = {
         {
           user_id: 2,
           name: "Wine - White, Schroder And Schyl",
-          price: 4000,
+          price: 400,
           weight: "50 grams",
           size: "1 Pcs",
           description:

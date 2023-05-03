@@ -183,9 +183,6 @@ function filtering(query) {
   let result = {
     include: joinBuild,
     where: {},
-    attributes: {
-      exclude: ['createdAt', 'updatedAt'],
-    },
     limit: limit,
     offset: offset,
   };
