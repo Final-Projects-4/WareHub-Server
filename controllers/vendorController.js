@@ -5,7 +5,12 @@ class VendorController {
   static async create(req, res, next) {
     try {
       const { name, country } = req.body;
-      const vendor = await Vendor.create({ name, country });
+      const vendor = await Vendor.create(
+        { 
+          name, 
+          country,
+          user_id: req.user.id 
+        });
       res.status(201).json(vendor);
     } catch (err) {
       console.log(err);
@@ -14,9 +19,12 @@ class VendorController {
   }
 
   static async getAll(req, res, next) {
-    console.log('get all vendors');
     try {
-      const data = await Vendor.findAll({});
+      const data = await Vendor.findAll({
+        where: {
+          user_id: req.user.id
+        }
+      });
       res.status(200).json(data);
     } catch (err) {
       next(err);

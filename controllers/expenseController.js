@@ -1,10 +1,18 @@
 const { Expense } = require('../models');
 
 class ExpenseController {
+
+
   static async create(req, res, next) {
     try {
-      const { user_id, expense, detail, vendor_id } = req.body;
-      const expenseItem = await Expense.create({ user_id, expense, detail, vendor_id });
+      const { expense, detail, vendor_id } = req.body;
+      const expenseItem = await Expense.create(
+        { user_id: req.user.id,
+          expense, 
+          detail, 
+          vendor_id 
+        }
+      );
       res.status(201).json(expenseItem);
     } catch (err) {
       console.log(err);
@@ -12,15 +20,22 @@ class ExpenseController {
     }
   }
 
+
   static async getAll(req, res, next) {
-    console.log('get all expenses')
     try {
-      const data = await Expense.findAll({});
+      const data = await Expense.findAll(
+        {
+          where: {
+            user_id: req.user.id
+          }
+        }
+      );
       res.status(200).json(data);
     } catch (err) {
       next(err);
     }
   }
+
 
   static async getOne(req, res, next) {
     const { id } = req.params;
@@ -28,6 +43,7 @@ class ExpenseController {
     try {
       const data = await Expense.findOne({
         where: {
+          user_id: req.user.id,
           id,
         },
       });
@@ -42,12 +58,13 @@ class ExpenseController {
     }
   }
 
+
   static async update(req, res, next) {
     try {
       const { id } = req.params;
-      const { user_id, expense, detail } = req.body;
+      const { expense, detail } = req.body;
       const [updatedRowsCount, [updatedExpense]] = await Expense.update(
-        { user_id, expense, detail },
+        { user_id: req.user.id, expense, detail },
         { where: { id }, returning: true }
       );
       if (updatedRowsCount !== 1) {

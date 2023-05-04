@@ -5,7 +5,12 @@ class WarehouseController {
   static async create(req, res, next) {
     try {
       const { name, city, address } = req.body;
-      const warehouse = await Warehouse.create({ name, city, address });
+      const warehouse = await Warehouse.create(
+        { name, 
+          city, 
+          address,
+          user_id: req.user.id
+        });
       res.status(201).json(warehouse);
     } catch (err) {
       console.log(err);
@@ -14,9 +19,14 @@ class WarehouseController {
   }
 
   static async getAll(req, res, next) {
-    console.log('get all warehouses')
     try {
-      const data = await Warehouse.findAll({});
+      const data = await Warehouse.findAll(
+        {
+          where: {
+            user_id: req.user.id
+          }
+        }
+      );
       res.status(200).json(data);
     } catch (err) {
       next(err);
