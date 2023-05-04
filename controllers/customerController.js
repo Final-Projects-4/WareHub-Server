@@ -40,11 +40,11 @@ class CustomerController {
   };
 
   static create = async (req, res, next) => {
-    const { user_id, first_name, last_name, email, address, company } =
+    const { first_name, last_name, email, address, company } =
       req.body;
     try {
       const data = await Customer.create({
-        user_id,
+        user_id: req.user.id,
         first_name,
         last_name,
         email,

@@ -5,7 +5,7 @@ const DEFAULT_LIMIT = 1;
 
 class ProductController {
   static async create(req, res, next) {
-    const { name, price, weight, size, description, SKU,vendor_id, warehouse_id, quantity,category_id } = req.body;
+    const { name, price, weight, size, description, SKU, category_id } = req.body;
     
     
 
@@ -15,29 +15,6 @@ class ProductController {
           { name, price, weight, size, description, SKU, user_id: req.user.id},
           { transaction: t }
         );
-
-        await Expense.create(
-          {
-            user_id: req.user.id,
-            expense: price * quantity,
-            detail: `Expense of ${createdProduct.id}`,
-          },
-          { transaction: t }
-        );
-        
-        if(warehouse_id) {
-          await WarehouseStock.create(
-            {product_id: createdProduct.id, warehouse_id, quantity},
-            { transaction: t}
-          );
-        }
-
-        if (vendor_id) {
-          await ProductVendor.create(
-            { product_id: createdProduct.id, vendor_id },
-            { transaction: t }
-          );
-        }
 
         if (category_id) {
           await ProductCategory.create(
@@ -56,6 +33,76 @@ class ProductController {
     }
   }
 
+  static async addStock(req, res, next) {
+    const { vendor_id, warehouse_id, quantity, product_id } = req.body;
+  
+    try {
+      const Stock = await sequelize.transaction(async (t) => {
+        const foundProduct = await Product.findOne({
+          where: {
+            id: product_id,
+            user_id: req.user.id, 
+          },
+          transaction: t,
+        });
+  
+        const foundWarehouse = await Warehouse.findOne({
+          where: {
+            id: warehouse_id,
+            user_id: req.user.id, 
+          },
+          transaction: t,
+        });
+  
+        const foundVendor = await Vendor.findOne({
+          where: {
+            id: vendor_id,
+            user_id: req.user.id, 
+          },
+          transaction: t,
+        });
+  
+        if (!foundProduct || !foundWarehouse || !foundVendor) {
+          throw { name: "ErrorNotFound" };
+        }
+  
+        const updatedStock = await WarehouseStock.create(
+          {
+            product_id: foundProduct.id,
+            warehouse_id: foundWarehouse.id,
+            quantity: quantity,
+          },
+          { transaction: t }
+        );
+  
+        await Expense.create(
+          {
+            user_id: req.user.id,
+            expense: foundProduct.price * quantity,
+            detail: `Expense of ${foundProduct.user_id}`
+          },
+          { transaction: t }
+        );
+  
+        await ProductVendor.create(
+          {
+            product_id: foundProduct.id,
+            vendor_id: foundVendor.id,
+          },
+          { transaction: t }
+        );
+  
+        return updatedStock;
+      });
+  
+      res.status(201).json(Stock);
+    } catch (err) {
+      console.log(err.name);
+      next(err);
+    }
+  }
+  
+  
   static async getAll(req, res, next) {
     try {
       const {page, limit} = req.query;
@@ -115,16 +162,7 @@ class ProductController {
     const { id } = req.params;
   
     try {
-      const deletedRowsCount = await sequelize.transaction(async (t) => {
-        // Delete related expenses
-        await Expense.destroy({
-          where: {
-            detail: `Expense of ${id}`,
-          },
-          transaction: t,
-        });
-  
-        //delete the product
+        await sequelize.transaction(async (t) => {
         const deletedProductRowsCount = await Product.destroy({
           where: {
             id,

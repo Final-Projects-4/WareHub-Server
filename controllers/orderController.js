@@ -1,14 +1,16 @@
-const { Order, Customer, User, OrderProduct, Product, sequelize, Revenue, WarehouseStock } = require('../models');
+const { Order, Customer, User, OrderProduct, Product, sequelize, Revenue, WarehouseStock, Warehouse } = require('../models');
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 1;
 
 class OrderController {
   static async create(req, res, next) {
-    const { name, customer_id, warehouse_id, user_id, order_products } = req.body;
+    const { name, customer_id, warehouse_id,order_products } = req.body;
   
     const t = await sequelize.transaction();
   
     try {
       const createdOrder = await Order.create(
-        { name, customer_id, warehouse_id, user_id },
+        { name, customer_id, warehouse_id, user_id: req.user.id },
         { transaction: t }
       );
   
@@ -62,7 +64,7 @@ class OrderController {
   
       await Revenue.create(
         {
-          user_id,
+          user_id: req.user.id,
           revenue: totalPrice,
           detail: `revenue from order detail ${createdOrder.id}`,
         },
@@ -81,33 +83,36 @@ class OrderController {
   
   static async getAll(req, res, next) {
     try {
-      const data = await Order.findAll({
-        include: [Customer, User, OrderProduct],
-      });
-      
-    if (data) {
-      res.status(200).json(data);
-    } else {
-      throw { name: 'ErrorNotFound' };
-    }
+      const { page,limit } = req.query;
+      const { count, rows: data } = await Order.findAndCountAll(filtering(req.query, req.user.id));
+      const currentPage = page ? +page : DEFAULT_PAGE;
+      const totalPages = limit ? Math.ceil(count / limit) : Math.ceil(count / DEFAULT_LIMIT);
+      const result = {
+        totalData: count,
+        data,
+        totalPages,
+        currentPage
+      }
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }
   }
+  
 
   static async getOne(req, res, next) {
     const { id } = req.params;
 
     try {
-      const data = await Order.findOne({
+      const result = await Order.findOne({
         where: {
           id,
         },
         include: [Customer, User, Product],
       });
 
-      if (data) {
-        res.status(200).json(data);
+      if (result) {
+        res.status(200).json(result);
       } else {
         throw { name: 'ErrorNotFound' };
       }
@@ -130,5 +135,24 @@ class OrderController {
     }
   }
 }
+
+function filtering(reqQuery, userId) {
+  const { page, limit } = reqQuery;
+  const offset = (page - 1) * limit;
+
+  const filter = {
+    where: {
+      user_id: userId,
+    },
+    include: [Customer, Warehouse, User, OrderProduct],
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  };
+
+  return filter;
+}
+
+
+
 
 module.exports = OrderController;
