@@ -86,7 +86,7 @@ class OrderController {
       const { page,limit } = req.query;
       const { count, rows: data } = await Order.findAndCountAll(filtering(req.query, req.user.id));
       const currentPage = page ? +page : DEFAULT_PAGE;
-      const totalPages = Math.ceil(count / limit);
+      const totalPages = limit ? Math.ceil(count / limit) : Math.ceil(count / DEFAULT_LIMIT);
       const result = {
         totalData: count,
         data,
