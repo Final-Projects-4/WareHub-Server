@@ -83,19 +83,17 @@ class OrderController {
   
   static async getAll(req, res, next) {
     try {
-      const { page = 1, limit = 10 } = req.query;
+      const { page,limit } = req.query;
       const { count, rows: data } = await Order.findAndCountAll(filtering(req.query, req.user.id));
-      if (data) {
-        const totalPages = Math.ceil(count / limit);
-        res.status(200).json({
-          totalData: count,
-          data,
-          totalPages,
-          currentPage: parseInt(page),
-        });
-      } else {
-        throw { name: "ErrorNotFound" };
+      const currentPage = page ? +page : DEFAULT_PAGE;
+      const totalPages = Math.ceil(count / limit);
+      const result = {
+        totalData: count,
+        data,
+        totalPages,
+        currentPage
       }
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }
