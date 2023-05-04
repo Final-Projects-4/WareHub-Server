@@ -102,7 +102,6 @@ class ProductController {
     }
   }
   
-  
   static async getAll(req, res, next) {
     try {
       const {page, limit} = req.query;
