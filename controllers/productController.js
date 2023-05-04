@@ -186,93 +186,40 @@ class ProductController {
 }
 
 function filtering(query, user) {
-  let {category_id,q,warehouse_id,vendor_id, limit, page, sort} = query;
-  let offset = 0;
-
-  if (page && limit) {
-    offset = (page - 1) * limit;
-  }
+  const { category_id, q, warehouse_id, vendor_id, limit, page, sort } = query;
+  const offset = (page && limit) ? (page - 1) * limit : 0;
   
-
-  let joinBuild = []
-
-  let queryCategory = {
-    model: Category,
-    where: {},
-    required: true
-  }
-
-  let queryWarehouse = {
-    model: Warehouse,
-    where: {},
-    required: true
-  }
-
-  let queryVendor = {
-    model: Vendor,
-    where: {},
-    required: true
-  }
-
-  if(category_id) {
-    queryCategory.where = {
-      id: +category_id
-    }
-  } 
-
-  if(warehouse_id) {
-    queryWarehouse.where = {
-      id: +warehouse_id
-    }
-  }
-
-  if(vendor_id) {  
-    queryVendor.where = {
-      id: +vendor_id
-    }
-  }
-
+  const joinBuild = [
+    { 
+      model: Category, 
+      where: category_id ? { id: +category_id } : {}, 
+      required: true },
+    { model: Warehouse, 
+      where: warehouse_id ? { id: +warehouse_id } : {}, 
+      required: true },
+    { model: Vendor, 
+      where: vendor_id ? { id: +vendor_id } : {}, 
+      required: true }
+  ];
   
-
-  joinBuild.push(queryCategory)
-  joinBuild.push(queryWarehouse)
-  joinBuild.push(queryVendor)
-  
-  let result = {
+  const result = {
     include: joinBuild,
-    where: {
-      user_id: user.id
-    },
+    where: { user_id: user.id },
     limit: limit,
     offset: offset,
-    distinct: true
+    distinct: true,
+    order: sort ? [[sort.split(':')[0], sort.split(':')[1] || 'ASC']] : []
   };
 
-  if(q) {
-    result.where = {
-      [Op.or]: [
-        {
-          name: {
-            [Op.iLike]: `%${q}%`
-          }
-        },
-        {
-          SKU: {
-            [Op.iLike]: `%${q}%`
-          }
-        }
-      ]
-    }
+  if (q) {
+    result.where[Op.or] = [
+      { name: { [Op.iLike]: `%${q}%` } },
+      { SKU: { [Op.iLike]: `%${q}%` } }
+    ];
   }
-
-  if (sort) {
-    const sortArray = sort.split(':');
-    result.order = [[sortArray[0], sortArray[1] || 'ASC']];
-  }
-  
 
   return result;
-
 }
+
 
 module.exports = ProductController;
