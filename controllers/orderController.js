@@ -136,21 +136,32 @@ class OrderController {
   }
 }
 
-function filtering(reqQuery, userId) {
-  const { page, limit } = reqQuery;
+function filtering(query, user) {
+  const { customer_id, warehouse_id, page, limit, sort } = query;
   const offset = (page - 1) * limit;
 
+  const joinBuild = [
+    { model: Customer, 
+      where: customer_id ? { id: +customer_id } : {}, 
+      required: true },
+    { model: Warehouse, 
+      where: warehouse_id ? { id: +warehouse_id } : {}, 
+      required: true }
+  ];
+
   const filter = {
-    where: {
-      user_id: userId,
-    },
-    include: [Customer, Warehouse, User, OrderProduct],
+    include: joinBuild,
+    where: { user_id: user },
+    exclude: [User],
     limit: parseInt(limit),
     offset: parseInt(offset),
+    distinct: true,
+    order: sort ? [[sort.split(':')[0], sort.split(':')[1] || 'ASC']] : []
   };
 
   return filter;
 }
+
 
 
 
