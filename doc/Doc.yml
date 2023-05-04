@@ -3,7 +3,7 @@ info:
   title: 'API WareHub Server'
   description: >-
     "Dokumentasi WareHub API"
-  version: '1.1'
+  version: '1.2'
 servers:
   - url: http://localhost:3000
 tags:
@@ -640,6 +640,111 @@ paths:
             application/json:
               schema :
                 $ref: '#/components/schemas/eror'
+#Order
+  /orders/create:
+    post:
+      tags:
+        - "Order"
+      description: 'Post Order Data'
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/ordersPost'
+      responses:
+        '201':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/orderPostRespons' 
+  /orders/:
+    get:
+      tags:
+        - "Order"
+      description: 'Get All Order Data'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/orderGetRespons'  
+  /orders/{id}:
+    get:
+      tags:
+        - "Order"
+      description: 'Get Order By Id'
+      summary: Get Order By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Expense to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/orderGetRespons'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
+    put:
+      tags:
+        - "Order"
+      description: 'Update Order By Id'
+      summary: Update Order By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Expense to put
+      requestBody: 
+        content: 
+          application/json: 
+            schema: 
+              $ref: '#/components/schemas/ordersPost'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/expensePutResponses'
+    delete:
+      tags:
+        - "Order"
+      description: 'Delete Order By Id'
+      summary: Delete Order By Id
+      parameters: 
+        - in : path
+          name : id
+          schema : 
+            $ref: '#/components/schemas/getById'
+          required: true
+          description: Numeric ID of the Expense to Delete
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/expenseDelResponses'
+        '404':
+          description: Error Not Found
+          content:
+            application/json:
+              schema :
+                $ref: '#/components/schemas/eror'
 
 
 components:
@@ -1084,7 +1189,6 @@ components:
       additionalProperties: false
       required:
         - message
-
   #Expense Schemas
     expensePost :  
       type: object
@@ -1403,3 +1507,162 @@ components:
         - user_id
         - updatedAt
         - createdAt
+
+    ordersPost :  
+      type: object
+      properties:
+        name : 
+          type: string
+          example: "Order1"
+        customer_id  : 
+          type: integer
+          example: "1"    
+        warehouse_id  : 
+          type: integer
+          example: "1"    
+        user_id  : 
+          type: integer
+          example: "1"    
+        order_products  : 
+          type: object
+          example:                  
+            product_id : 1
+            price : 100
+            quantity : 100
+    orderPostRespons:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        customer_id:
+          type: integer
+        warehouse_id:
+          type: integer
+        user_id:
+          type: integer
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+        total_price:
+          type: integer
+        order_products:
+          type: array
+          items: {}
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - customer_id
+        - warehouse_id
+        - user_id
+        - updatedAt
+        - createdAt
+        - total_price
+        - order_products
+
+    orderGetRespons:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          user_id:
+            type: integer
+          customer_id:
+            type: integer
+          warehouse_id:
+            type: integer
+          name:
+            type: string
+          total_price:
+            type: integer
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          Customer:
+            type: object
+            properties:
+              id:
+                type: integer
+              first_name:
+                type: string
+              last_name:
+                type: string
+              email:
+                type: string
+              address:
+                type: string
+              company:
+                type: string
+              user_id:
+                type: integer
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+            required:
+              - id
+              - first_name
+              - last_name
+              - email
+              - address
+              - company
+              - user_id
+              - createdAt
+              - updatedAt
+            additionalProperties: false
+          User:
+            type: object
+            properties:
+              id:
+                type: integer
+              first_name:
+                type: string
+              last_name:
+                type: string
+              email:
+                type: string
+              username:
+                type: string
+              password:
+                type: string
+              address:
+                type: string
+              company:
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+            required:
+              - id
+              - first_name
+              - last_name
+              - email
+              - username
+              - password
+              - address
+              - company
+              - createdAt
+              - updatedAt
+            additionalProperties: false
+          OrderProducts:
+            type: array
+            items: {}
+        required:
+          - id
+          - user_id
+          - customer_id
+          - warehouse_id
+          - name
+          - total_price
+          - createdAt
+          - updatedAt
+          - Customer
+          - User
+          - OrderProducts
