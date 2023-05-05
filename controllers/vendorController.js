@@ -1,6 +1,7 @@
 const { Vendor } = require('../models');
 const ownedData = require('../middlewares/dataHandler');
 
+
 class VendorController {
 
 
