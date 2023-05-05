@@ -4,6 +4,7 @@ const ownedData = require('../middlewares/dataHandler');
 
 class WarehouseController {
 
+
   static create = async (req, res, next) => {
     const { name, city, address } = req.body;
     try {
@@ -20,7 +21,8 @@ class WarehouseController {
     }
   };
 
-   static getAll = async (req, res, next) => {
+
+  static getAll = async (req, res, next) => {
     try {
       const data = await Warehouse.findAll({
         where: {
@@ -33,6 +35,7 @@ class WarehouseController {
     }
   };
 
+
   static getById = async (req, res, next) => {
     try {
       const data = await ownedData(Warehouse, req.params.id, req.user.id);
@@ -41,6 +44,7 @@ class WarehouseController {
       next(err);
     }
   };
+
 
   static update = async (req, res, next) => {
     const { name, city, address } = req.body;
@@ -73,6 +77,7 @@ class WarehouseController {
     }
   };
 
+  
   static delete = async (req, res, next) => {
     try {
       const warehouse = await ownedData(Warehouse, req.params.id, req.user.id);

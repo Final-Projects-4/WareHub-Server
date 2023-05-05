@@ -5,6 +5,8 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 1;
 
 class OrderController {
+
+  
   static async create(req, res, next) {
     const { name, customer_id, warehouse_id,order_products } = req.body;
   

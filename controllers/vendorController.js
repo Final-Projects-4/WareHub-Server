@@ -20,6 +20,7 @@ class VendorController {
     }
   };
 
+
   static getAll = async (req, res, next) => {
     try {
       const data = await Vendor.findAll({
@@ -33,6 +34,7 @@ class VendorController {
     }
   };
 
+
   static getById = async (req, res, next) => {
     try {
       const data = await ownedData(Vendor, req.params.id, req.user.id);
@@ -41,6 +43,7 @@ class VendorController {
       next(err);
     }
   };
+
 
   static update = async (req, res, next) => {
     const { name, country } = req.body;
@@ -71,6 +74,7 @@ class VendorController {
     }
   };
 
+  
   static delete = async (req, res, next) => {
     try {
       const vendor = await ownedData(Vendor, req.params.id, req.user.id);

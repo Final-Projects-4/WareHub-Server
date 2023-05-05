@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 class UserController {
+
+
   static async register(req, res, next) {
     try {
       const { first_name, last_name, email, username, password, address, company } = req.body;
@@ -14,6 +16,7 @@ class UserController {
       next(err);
     }
   }
+
 
   static async login(req, res, next) {
     try {
@@ -43,6 +46,7 @@ class UserController {
     }
   }
 
+
   static async getAll(req, res, next) {
     try {
       const data = await User.findAll({});
@@ -51,6 +55,7 @@ class UserController {
       next(err);
     }
   }
+
 
   static async getById(req, res, next) {
     const {id} = req.params;
@@ -72,6 +77,7 @@ class UserController {
     }
   }
 
+
   static async update(req, res, next) {
     try {
       const { id } = req.params;
@@ -91,6 +97,7 @@ class UserController {
     }
   }
 
+  
   static async delete(req, res, next) {
     try {
       const { id } = req.params;
