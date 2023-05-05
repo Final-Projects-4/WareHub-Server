@@ -15,6 +15,7 @@ class RevenueController {
     }
   }
 
+
   static async getAll(req, res, next) {
     try {
       const data = await Revenue.findAll({
@@ -28,6 +29,7 @@ class RevenueController {
     }
   }
 
+
   static getById = async (req, res, next) => {
     try {
       const data = await ownedData(Revenue, req.params.id, req.user.id);
@@ -36,7 +38,8 @@ class RevenueController {
       next(err);
     }
   };
-
+  
+  
   static async update(req, res, next) {
     const { revenue, detail } = req.body;
     try {
@@ -66,6 +69,7 @@ class RevenueController {
     }
   }
 
+  
   static async delete(req, res, next) {
     try {
       const revenue = await ownedData(Revenue, req.params.id, req.user.id)
