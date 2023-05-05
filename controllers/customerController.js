@@ -1,4 +1,7 @@
 const { Customer } = require("../models/");
+const ownedData = require('../middlewares/dataHandler');
+
+
 class CustomerController {
 
 
@@ -38,22 +41,18 @@ class CustomerController {
 
   static getById = async (req, res, next) => {
     try {
-      await ownedData(req.params.id, req.user.id);
-      const data = await Customer.findByPk(req.params.id);
+      const data = await ownedData(Customer, req.params.id, req.user.id);
       res.status(200).json(data);
-    } catch (err) {
+    } catch (err) { 
       next(err);
     }
   };
   
   
   static update = async (req, res, next) => {
-    const { id } = req.params
     const { first_name, last_name, email, address, company } = req.body;
     try {
-      await ownedData(req.params.id, req.user.id);
-      const data = await Customer.findByPk(req.params.id);
-      if (!data) throw { name: 'ErrorNotFound' };
+      const data = await ownedData(Customer, req.params.id, req.user.id);
       const [numOfRowsAffected, [updatedData]] = await Customer.update(
         {
           user_id: req.user.id,
@@ -64,10 +63,8 @@ class CustomerController {
           company: company,
         },
         {
-          where: {
-            id,
-          },
-          returning: true, 
+          where: { id: data.id, }
+          ,returning: true, 
         }
       );
       res.status(200).json({ 
@@ -90,31 +87,17 @@ class CustomerController {
 
 
   static delete = async (req, res, next) => {
-    const { id } = req.params;
     try {
-      await ownedData(req.params.id, req.user.id);
-      const data = await Customer.findByPk(req.params.id);
-      const deletedData = await Customer.destroy({
-        where: {
-          id,
-        },
-      });
-      res.status(200).json({message: `${data.last_name} with an id of ${id} deleted`});
+      const customer = await ownedData(Customer, req.params.id, req.user.id);
+      await Customer.destroy({where: {id: req.params.id,}});
+      res.status(200).json(
+        {message: `${customer.last_name} deleted`}
+      );
       
     } catch (err) {
      next(err);
     }
   };
-}
-
-const ownedData = async (customer_id, user_id) => {
-  const data = await Customer.findOne({
-    where: {
-      id: customer_id,
-      user_id: user_id
-    }
-  });
-  if (!data) throw { name: 'ErrorNotFound' };
 }
 
 module.exports = CustomerController;

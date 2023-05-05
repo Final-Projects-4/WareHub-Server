@@ -1,6 +1,10 @@
-const { OrderProduct } = require('../models');
+const { OrderProduct , Product, User} = require('../models');
+const ownedData = require('../middlewares/dataHandler');
+
 
 class OrderProductController {
+
+
   static async create(req, res, next) {
     try {
       const { product_id, order_id, price, quantity } = req.body;
@@ -11,39 +15,67 @@ class OrderProductController {
     }
   }
 
+
   static async getAll(req, res, next) {
     try {
-      const data = await OrderProduct.findAll({});
-      res.status(200).json(data);
+        const products = await Product.findAll({
+          include: [{
+            model: User,
+            where: { id: req.user.id }
+          }]
+        });
+    
+        const orderProducts = await OrderProduct.findAll({
+          where: {
+            product_id: products.map(p => p.id)
+          }
+        });
+
+        res.status(200).json(orderProducts);
     } catch (err) {
       next(err);
     }
   }
 
-  static async getOne(req, res, next) {
-    const { id } = req.params;
 
+  static async getById(req, res, next) {
     try {
       const data = await OrderProduct.findOne({
         where: {
-          id,
+          id: req.params.id,
         },
       });
-
-      if (data) {
-        res.status(200).json(data);
-      } else {
-        throw { message: "ErrorNotFound" };
-      }
+    
+      res.status(200).json(data);
+      
     } catch (err) {
       next(err);
     }
   }
 
+  
   static async update(req, res, next) {
     try {
       const { id } = req.params;
       const { product_id, order_id, price, quantity } = req.body;
+
+      const products = await Product.findAll({
+        include: [{
+          model: User,
+          where: { id: req.user.id }
+        }]
+      });
+      
+      const orderProduct = await OrderProduct.findOne({
+        where: {
+          id,
+          product_id: products.map(p => p.id)
+        }
+      });
+      if (!orderProduct) {
+        throw { message: "ErrorNotFound" };
+      }
+
       const [updatedRowsCount, [updatedOrderProduct]] = await OrderProduct.update(
         { product_id, order_id, price, quantity },
         { where: { id }, returning: true }
@@ -53,21 +85,33 @@ class OrderProductController {
       }
       res.status(200).json(updatedOrderProduct);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
 
+
   static async delete(req, res, next) {
     try {
       const { id } = req.params;
+      const products = await Product.findAll({
+        include: [{
+          model: User,
+          where: { id: req.user.id }
+        }]
+      });
+  
+      const orderProducts = await OrderProduct.findAll({
+        where: {
+          product_id: products.map(p => p.id)
+        }
+      });
+
       const deletedRowsCount = await OrderProduct.destroy({ where: { id } });
       if (deletedRowsCount !== 1) {
         throw { message: "ErrorNotFound" };
       }
-      res.status(204).json({ message: 'Deleted successfully' });
+      res.status(200).json({ message: `Deleted successfully` });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
