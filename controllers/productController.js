@@ -1,9 +1,12 @@
 const { sequelize, Product, Category, Warehouse, Vendor, Expense, ProductCategory,ProductVendor, WarehouseStock } = require('../models');
 const { Op } = require('sequelize');
+const ownedData = require('../middlewares/dataHandler')
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 1;
 
 class ProductController {
+
+
   static async create(req, res, next) {
     const { name, price, weight, size, description, SKU, category_id } = req.body;
     
@@ -16,12 +19,12 @@ class ProductController {
           { transaction: t }
         );
 
-        if (category_id) {
-          await ProductCategory.create(
-            { product_id: createdProduct.id, category_id },
-            { transaction: t }
-          );
-        }
+        
+        await ProductCategory.create(
+          { product_id: createdProduct.id, category_id },
+          { transaction: t }
+        );
+        
 
         return createdProduct;
       });
@@ -32,6 +35,7 @@ class ProductController {
       next(err);
     }
   }
+
 
   static async addStock(req, res, next) {
     const { vendor_id, warehouse_id, quantity, product_id } = req.body;
@@ -53,7 +57,7 @@ class ProductController {
           },
           transaction: t,
         });
-  
+
         const foundVendor = await Vendor.findOne({
           where: {
             id: vendor_id,
@@ -102,6 +106,7 @@ class ProductController {
     }
   }
   
+
   static async getAll(req, res, next) {
     try {
       const {page, limit} = req.query;
@@ -120,37 +125,48 @@ class ProductController {
     }
   }
   
-  static async getOne(req, res, next) {
 
-    const { id } = req.params;
-
+  static async getById(req, res, next) {
     try {
-      const data = await Product.findOne({
-        include: [ Vendor, Warehouse ],
-        where: {
-          id,
-        },
-      });
-
+      const data = await ownedData(Product, req.params.id, req.user.id);
       res.status(200).json(data);
-      
-    } catch (err) {
+    } catch (err) { 
       next(err);
     }
-  }
+  };
+
 
   static async update(req, res, next) {
+    const { name, price, weight, size, description, SKU } = req.body;
     try {
-      const { id } = req.params;
-      const { name, price, weight, size, description, SKU } = req.body;
-      const [updatedRowsCount, [updatedProduct]] = await Product.update(
-        { name, price, weight, size, description, SKU },
-        { where: { id }, returning: true }
+      const data = await ownedData(Product, req.params.id, req.user.id);
+      const [numOfRowsAffected, [updatedData]] = await Product.update(
+        { 
+          name: name, 
+          price: price, 
+          weight: weight, 
+          size: size, 
+          description: description, 
+          SKU: SKU 
+        },
+        { where: 
+          { id: data.id }
+          , returning: true 
+        }
       );
-      if (updatedRowsCount !== 1) {
-        throw {name: "ErrorNotFound"};
-      }
-      res.status(200).json(updatedProduct);
+      res.status(200).json({ 
+        previous: 
+          { 
+            name: data.name, 
+            price: data.price, 
+            weight: data.weight, 
+            size: data.size, 
+            description: data.description, 
+            SKU: data.SKU  
+          },
+        current: updatedData,
+        dataUpdated: numOfRowsAffected
+      });
     } catch (err) {
       console.log(err);
       next(err);
@@ -158,31 +174,17 @@ class ProductController {
   }
 
   static async delete(req, res, next) {
-    const { id } = req.params;
-  
     try {
-        await sequelize.transaction(async (t) => {
-        const deletedProductRowsCount = await Product.destroy({
-          where: {
-            id,
-          },
-          transaction: t,
-        });
-  
-        if (deletedProductRowsCount !== 1) {
-          throw { name: "ErrorNotFound" };
-        }
-  
-        return deletedProductRowsCount;
-      });
-  
-      res.status(200).send({ message: 'Product Deleted' });
+      const product = await ownedData(Product, req.params.id, req.user.id);
+      await Product.destroy({where: {id: req.params.id,}});
+      res.status(200).json(
+        {message: `${product.name} deleted`}
+      );
+      
     } catch (err) {
-      console.log(err);
-      next(err);
+     next(err);
     }
-  }
-  
+  };
 }
 
 function filtering(query, user) {

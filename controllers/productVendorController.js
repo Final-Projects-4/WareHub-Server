@@ -2,6 +2,8 @@ const { sequelize, ProductVendor, Product, Vendor } = require('../models');
 const { Op } = require('sequelize');
 
 class ProductVendorController {
+
+
   static async create(req, res, next) {
     const { product_id, vendor_id } = req.body;
 
@@ -38,7 +40,7 @@ class ProductVendorController {
     }
   }
 
-  static async getOne(req, res, next) {
+  static async getById(req, res, next) {
     const { id } = req.params;
 
     try {

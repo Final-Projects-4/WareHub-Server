@@ -52,7 +52,7 @@ class UserController {
     }
   }
 
-  static async getOne(req, res, next) {
+  static async getById(req, res, next) {
     const {id} = req.params;
 
     try {
