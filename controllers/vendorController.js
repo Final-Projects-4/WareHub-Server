@@ -74,7 +74,7 @@ class VendorController {
     }
   };
 
-  
+
   static delete = async (req, res, next) => {
     try {
       const vendor = await ownedData(Vendor, req.params.id, req.user.id);

@@ -40,8 +40,8 @@ class ProductVendorController {
       next(err);
     }
   }
-
-
+  
+  
   static async getById(req, res, next) {
     const { id } = req.params;
 

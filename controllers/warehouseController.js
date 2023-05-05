@@ -77,7 +77,7 @@ class WarehouseController {
     }
   };
 
-  
+
   static delete = async (req, res, next) => {
     try {
       const warehouse = await ownedData(Warehouse, req.params.id, req.user.id);

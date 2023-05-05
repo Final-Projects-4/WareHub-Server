@@ -38,8 +38,8 @@ class RevenueController {
       next(err);
     }
   };
-
-
+  
+  
   static async update(req, res, next) {
     const { revenue, detail } = req.body;
     try {
