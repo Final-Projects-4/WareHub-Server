@@ -269,7 +269,7 @@ class OrderController {
 }
 
 function filtering(query, user) {
-  const { customer_id, warehouse_id, page, limit, sort } = query;
+  const { customer_id, warehouse_id, page = 1, limit = 10, sort } = query;
   const offset = (page - 1) * limit;
 
   const joinBuild = [
