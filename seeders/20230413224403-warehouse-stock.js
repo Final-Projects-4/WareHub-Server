@@ -14,13 +14,6 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          product_id: 1,
-          warehouse_id: 2,
-          quantity: 100,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
           product_id: 2,
           warehouse_id: 2,
           quantity: 100,
@@ -29,18 +22,19 @@ module.exports = {
         },
         {
           product_id: 3,
-          warehouse_id: 1,
+          warehouse_id: 3,
           quantity: 100,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           product_id: 4,
-          warehouse_id: 2,
+          warehouse_id: 4,
           quantity: 100,
           createdAt: new Date(),
           updatedAt: new Date(),
-        }
+        },
+        
       ],
       {}
     );

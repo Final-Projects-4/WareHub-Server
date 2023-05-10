@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           user_id: 1,
-          name: "Keripik Tela",
+          name: "Potatoes",
           price: 100,
           weight: "1 Kg",
           size: "20 Cm",

@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           user_id: 1,
-          name: "Gudang Barang Depok 1",
+          name: "Warehouse 1",
           city: "Depok",
           address: "Jl Penghasahan No 15",
           createdAt: new Date(),
@@ -16,7 +16,7 @@ module.exports = {
         },
         {
           user_id: 2,
-          name: "Gudang Depok 2",
+          name: "Warehouse 2",
           city: "Depok",
           address: "Jl Penghasahan No 10",
           createdAt: new Date(),
@@ -25,7 +25,7 @@ module.exports = {
         {
           user_id: 1,
           city: "Matsubara",
-          name: "Gudang Barang Matsubara",
+          name: "Warehouse 1 . 2",
           address: "9 Blackbird Place Matsubara",
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -33,7 +33,7 @@ module.exports = {
         {
           user_id: 2,
           city: "Bergvliet",
-          name: "Gudang Barang Bergvliet",
+          name: "Warehouse 2 . 2",
           address: "976 Eastlawn Terrace Bergvliet",
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -41,7 +41,7 @@ module.exports = {
         {
           user_id: 1,
           city: "Sison",
-          name: "Gudang Barang Sison",
+          name: "Warehouse 1 . 3",
           address: "2633 Huxley Center Sison",
           createdAt: new Date(),
           updatedAt: new Date(),
