@@ -70,14 +70,32 @@ class ProductController {
           throw { name: "ErrorNotFound" };
         }
   
-        const updatedStock = await WarehouseStock.create(
-          {
+        const existingStock = await WarehouseStock.findOne({
+          where: {
             product_id: foundProduct.id,
-            warehouse_id: foundWarehouse.id,
-            quantity: quantity,
+            warehouse_id: foundWarehouse.id
           },
-          { transaction: t }
-        );
+          transaction: t
+        });
+        
+        let updatedStock = {}
+
+        if (existingStock) {
+          existingStock.quantity += quantity;
+          await existingStock.save({ transaction: t });
+          updatedStock = existingStock
+        } else {
+          const newStock = await WarehouseStock.create(
+            {
+              product_id: foundProduct.id,
+              warehouse_id: foundWarehouse.id,
+              quantity: quantity,
+            },
+            { transaction: t }
+          );
+
+          updatedStock = newStock;
+        }
   
         await Expense.create(
           {
@@ -96,12 +114,11 @@ class ProductController {
           { transaction: t }
         );
   
-        return updatedStock;
+        return updatedStock
       });
   
       res.status(201).json(Stock);
     } catch (err) {
-      console.log(err.name);
       next(err);
     }
   }
