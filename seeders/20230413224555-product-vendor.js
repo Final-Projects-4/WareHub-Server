@@ -14,7 +14,7 @@ module.exports = {
         },
         {
           product_id: 2,
-          vendor_id: 2,
+          vendor_id: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -26,7 +26,7 @@ module.exports = {
         },
         {
           product_id: 4,
-          vendor_id: 4,
+          vendor_id: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         }
