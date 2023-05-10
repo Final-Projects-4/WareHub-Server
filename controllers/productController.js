@@ -137,6 +137,7 @@ class ProductController {
         currentPage
       }
       res.status(200).json(result);
+      
     } catch (err) {
       next(err);
     }

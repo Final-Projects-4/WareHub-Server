@@ -18,12 +18,19 @@ class RevenueController {
 
   static async getAll(req, res, next) {
     try {
+      let totalRevenue = 0;
       const data = await Revenue.findAll({
         where: {
           user_id: req.user.id
         }
       });
-      res.status(200).json(data);
+      for(let i = 0; i < data.length; i++) {
+        totalRevenue += data[i].revenue;
+      }
+      res.status(200).json({
+        revenues: data,
+        totalRevenue
+      });
     } catch (err) {
       next(err);
     }
@@ -39,6 +46,7 @@ class RevenueController {
     }
   };
   
+
   
   static async update(req, res, next) {
     const { revenue, detail } = req.body;

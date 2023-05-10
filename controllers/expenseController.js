@@ -24,6 +24,7 @@ class ExpenseController {
 
   static async getAll(req, res, next) {
     try {
+      let totalExpense = 0;
       const data = await Expense.findAll(
         {
           where: {
@@ -31,7 +32,15 @@ class ExpenseController {
           }
         }
       );
-      res.status(200).json(data);
+      
+      for(let i = 0; i < data.length; i++) {
+        totalExpense += data[i].expense
+      }
+
+      res.status(200).json({
+        expenses: data,
+        totalExpense
+      });
     } catch (err) {
       next(err);
     }
