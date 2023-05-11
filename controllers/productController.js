@@ -31,7 +31,6 @@ class ProductController {
 
       res.status(201).json(product);
     } catch (err) {
-      console.log(err.name);
       next(err);
     }
   }
@@ -186,7 +185,6 @@ class ProductController {
         dataUpdated: numOfRowsAffected
       });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -213,13 +211,13 @@ function filtering(query, user) {
     { 
       model: Category, 
       where: category_id ? { id: +category_id } : {}, 
-      required: true },
+      required: false },
     { model: Warehouse, 
       where: warehouse_id ? { id: +warehouse_id } : {}, 
-      required: true },
+      required: false },
     { model: Vendor, 
       where: vendor_id ? { id: +vendor_id } : {}, 
-      required: true }
+      required: false }
   ];
   
   const result = {

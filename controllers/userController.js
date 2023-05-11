@@ -12,7 +12,6 @@ class UserController {
       const user = await User.create({ first_name, last_name, email, username, password: hashedPassword, address, company });
       res.status(201).json(user);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -41,7 +40,6 @@ class UserController {
       );
       res.status(200).json({ token });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -92,7 +90,6 @@ class UserController {
       }
       res.status(200).json(updatedUser);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -107,7 +104,6 @@ class UserController {
       }
       res.status(200).json({ message: 'User Deleted' });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

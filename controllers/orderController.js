@@ -26,9 +26,7 @@ class OrderController {
   
         const product = await Product.findByPk(currentProduct.product_id, { transaction: t });
   
-        if (!product || product.price !== currentProduct.price) {
-          throw {name: "productPriceError"};
-        }
+        
   
         const warehouseStock = await WarehouseStock.findOne({
           where: {
@@ -209,7 +207,6 @@ class OrderController {
         const previousRevenue = revenueEntry.revenue;
         revenueEntry.revenue = totalPrice;
         await revenueEntry.save({ transaction: t });
-        console.log(`Previous revenue of ${previousRevenue} updated to ${totalPrice} for order ${data.id}`);
       } else {
         await Revenue.create(
           {

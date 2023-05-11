@@ -19,7 +19,6 @@ class ProductVendorController {
 
       res.status(201).json(productVendor);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -66,7 +65,6 @@ class ProductVendorController {
         res.status(404).json({ message: `ProductVendor with id ${id} not found.` });
       }
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -89,7 +87,6 @@ class ProductVendorController {
         res.status(404).json({ message: `ProductVendor with id ${id} not found.` });
       }
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -111,7 +108,6 @@ class ProductVendorController {
         res.status(404).json({ message: `ProductVendor with id ${id} not found.` });
       }
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

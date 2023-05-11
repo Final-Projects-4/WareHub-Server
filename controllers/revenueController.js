@@ -10,7 +10,6 @@ class RevenueController {
       const data = await Revenue.create({ user_id: req.user.id, revenue, detail });
       res.status(201).json(data);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -72,7 +71,6 @@ class RevenueController {
         dataUpdated: numOfRowsAffected
       });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -84,7 +82,6 @@ class RevenueController {
       await Revenue.destroy({ where: {id: req.params.id} });
       res.status(200).json({message: `${revenue.detail} deleted`});
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

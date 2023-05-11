@@ -43,7 +43,6 @@ class WarehouseStockController {
       res.status(200).json({ message: 'Product moved successfully' });
     } catch (err) {
       await t.rollback();
-      console.log(err);
       next(err);
     }
   }
@@ -128,7 +127,6 @@ class WarehouseStockController {
       res.status(200).json({ message: 'Warehouse stock updated successfully' });
     } catch (err) {
       await t.rollback();
-      console.log(err);
       next(err);
     }
   };

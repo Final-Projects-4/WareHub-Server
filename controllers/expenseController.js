@@ -16,7 +16,6 @@ class ExpenseController {
       );
       res.status(201).json(expenseItem);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -81,7 +80,6 @@ class ExpenseController {
         dataUpdated: numOfRowsAffected
       });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -93,7 +91,6 @@ class ExpenseController {
       await Expense.destroy({ where: {id: req.params.id} });
       res.status(200).json({message: `${expense.detail} deleted`});
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
