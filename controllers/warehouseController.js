@@ -1,4 +1,4 @@
-const { Warehouse } = require('../models');
+const { Warehouse, Product } = require('../models');
 const ownedData = require('../middlewares/dataHandler');
 
 
@@ -27,7 +27,12 @@ class WarehouseController {
       const data = await Warehouse.findAll({
         where: {
           user_id: req.user.id
-        }
+        },
+        include: [
+          {
+            model:Product
+          }
+        ]
       });
       res.status(200).json(data);
     } catch (err) {

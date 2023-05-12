@@ -12,6 +12,7 @@ class OrderProductController {
       res.status(201).json(orderProduct);
     } catch (err) {
       next(err);
+      console.log(err)
     }
   }
 
