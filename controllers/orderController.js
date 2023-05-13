@@ -269,6 +269,15 @@ function filtering(query, user) {
   const { customer_id, warehouse_id, page = 1, limit = 10, sort } = query;
   const offset = (page - 1) * limit;
 
+
+  let joinCustomer = {
+    model: Customer
+  }
+  if (customer_id) {
+    joinCustomer.where = {
+      customer_id
+    }
+  }
   const joinBuild = [
     { model: Customer, 
       where: customer_id ? { id: +customer_id } : {}, 
@@ -276,6 +285,7 @@ function filtering(query, user) {
     { model: Warehouse, 
       where: warehouse_id ? { id: +warehouse_id } : {}, 
       required: true }
+    
   ];
 
   const filter = {
