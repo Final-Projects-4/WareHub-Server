@@ -211,13 +211,13 @@ function filtering(query, user) {
     { 
       model: Category, 
       where: category_id ? { id: +category_id } : {}, 
-      required: false },
+      required: true },
     { model: Warehouse, 
       where: warehouse_id ? { id: +warehouse_id } : {}, 
-      required: false },
+      required: true },
     { model: Vendor, 
       where: vendor_id ? { id: +vendor_id } : {}, 
-      required: false }
+      required: true }
   ];
   
   const result = {
