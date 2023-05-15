@@ -7,26 +7,26 @@ module.exports = {
       "Categories",
       [
         {
-          name: "Grocery",
-          description: " Kebutuhan Sehari Hari ",
+          name: "Foods",
+          description: " Generic foods category ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: "Elektronik",
-          description: " 123",
+          name: "Electronics",
+          description: " zapp zapp ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          name: "Film",
-          description: " 123",
+          name: "Plastics",
+          description: " oppa korea ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           name: "Jewelry",
-          description: "List Items Kategory Jewelry",
+          description: "cling cling",
           createdAt: new Date(),
           updatedAt: new Date(),
         }

@@ -25,7 +25,7 @@ module.exports = {
         {
           user_id: 1,
           city: "Matsubara",
-          name: "Warehouse 1 . 2",
+          name: "Warehouse 3",
           address: "9 Blackbird Place Matsubara",
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -33,7 +33,7 @@ module.exports = {
         {
           user_id: 2,
           city: "Bergvliet",
-          name: "Warehouse 2 . 2",
+          name: "Warehouse 4",
           address: "976 Eastlawn Terrace Bergvliet",
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -41,7 +41,7 @@ module.exports = {
         {
           user_id: 1,
           city: "Sison",
-          name: "Warehouse 1 . 3",
+          name: "Warehouse 5",
           address: "2633 Huxley Center Sison",
           createdAt: new Date(),
           updatedAt: new Date(),

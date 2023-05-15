@@ -14,9 +14,11 @@ class ProductController {
 
     try {
       const product = await sequelize.transaction(async (t) => {
+        console.log(req.file.path)
         const createdProduct = await Product.create(
-          { name, price, weight, size, description, SKU, user_id: req.user.id},
+          { name, price, weight, size, description, SKU, user_id: req.user.id, image: req.file.path},
           { transaction: t }
+          
         );
 
         
@@ -155,32 +157,37 @@ class ProductController {
 
   static async update(req, res, next) {
     const { name, price, weight, size, description, SKU } = req.body;
+    const { file } = req;
     try {
       const data = await ownedData(Product, req.params.id, req.user.id);
+      let updateFields = { 
+        name, 
+        price, 
+        weight, 
+        size, 
+        description, 
+        SKU 
+      };
+      if (file) {
+        updateFields.image = file.path;
+      }
       const [numOfRowsAffected, [updatedData]] = await Product.update(
+        updateFields,
         { 
-          name: name, 
-          price: price, 
-          weight: weight, 
-          size: size, 
-          description: description, 
-          SKU: SKU 
-        },
-        { where: 
-          { id: data.id }
-          , returning: true 
+          where: { id: data.id },
+          returning: true 
         }
       );
       res.status(200).json({ 
-        previous: 
-          { 
-            name: data.name, 
-            price: data.price, 
-            weight: data.weight, 
-            size: data.size, 
-            description: data.description, 
-            SKU: data.SKU  
-          },
+        previous: {
+          name: data.name, 
+          price: data.price, 
+          weight: data.weight, 
+          size: data.size, 
+          description: data.description, 
+          SKU: data.SKU,
+          image: data.image
+        },
         current: updatedData,
         dataUpdated: numOfRowsAffected
       });

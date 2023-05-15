@@ -18,9 +18,8 @@ app.use(cors())
 
 
 app.use(router)
-// app.get('/', (req, res) => {
-  
-// });
+app.use('/assets', express.static('assets'));
+
 app.use(errorHandler);
 
 app.listen(port, () => {

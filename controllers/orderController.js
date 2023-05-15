@@ -281,11 +281,12 @@ function filtering(query, user) {
   const joinBuild = [
     { model: Customer, 
       where: customer_id ? { id: +customer_id } : {}, 
-      required: true },
-    { model: Warehouse, 
+      required: customer_id ? true : false },
+    { 
+      model: Warehouse, 
       where: warehouse_id ? { id: +warehouse_id } : {}, 
-      required: true }
-    
+      required: warehouse_id ? true : false 
+    },    
   ];
 
   const filter = {

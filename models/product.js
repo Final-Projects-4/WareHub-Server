@@ -69,7 +69,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true
         }
-      }
+      },
+    image: {
+      type: DataTypes.STRING
+    }
   }, {
     sequelize,
     modelName: 'Product',
