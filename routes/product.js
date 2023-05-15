@@ -5,10 +5,10 @@ const ProductController = require('../controllers/productController');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './assets');
+        cb(null, './assets/');
     },
     filename: function(req, file, cb) {
-        cb(null, file.originalname)
+        cb(null, file.originalname.toLowerCase().split(" ").join("-"))
     }
 });
 
@@ -23,9 +23,9 @@ router.post('/create', (req, res, next) => {
       if (err) {
         return res.status(400).json({ error: err.message });
       }
-      ProductController.create(req, res, next);
+      next()
     });
-  });
+  },ProductController.create);
 router.post('/stocks', ProductController.addStock);
 router.put('/:id', upload.single('image'), ProductController.update);
 router.delete('/:id', ProductController.delete);

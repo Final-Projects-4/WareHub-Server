@@ -13,10 +13,11 @@ class ProductController {
     
 
     try {
+      const imagePath = `http://localhost:${process.env.PORT}/${req.file.path}`
       const product = await sequelize.transaction(async (t) => {
         console.log(req.file.path)
         const createdProduct = await Product.create(
-          { name, price, weight, size, description, SKU, user_id: req.user.id, image: req.file.path},
+          { name, price, weight, size, description, SKU, user_id: req.user.id, image: imagePath},
           { transaction: t }
           
         );

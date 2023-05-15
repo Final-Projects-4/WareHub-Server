@@ -16,9 +16,9 @@ app.use(morgan('tiny'))
 app.use(cors())
 
 
-
-app.use(router)
 app.use('/assets', express.static('assets'));
+app.use(router)
+
 
 app.use(errorHandler);
 
