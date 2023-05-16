@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const ownedData = require('../middlewares/dataHandler')
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 1;
+const { sendEmail } = require('../emailService')
 
 class ProductController {
 
@@ -137,7 +138,22 @@ class ProductController {
         products: rows,
         totalPages,
         currentPage
-      }
+      };
+      //SEND EMAIL ALERT!
+      rows.forEach((product) => {
+        const warehouses = product.Warehouses;
+        warehouses.forEach((warehouse) => {
+          const stock = warehouse.WarehouseStock.quantity;
+          if (stock < 10) {
+            const recipientEmail = 'vincentkho67@gmail.com';
+            const subject = 'Low Stock Alert';
+            const html = `<p>Product ${product.id} in Warehouse ${warehouse.id} is running low on stock. Current stock: ${stock}</p>`;
+            sendEmail(recipientEmail, subject, html);
+          }
+        });
+      });
+
+
       res.status(200).json(result);
       
     } catch (err) {
