@@ -1,22 +1,54 @@
 const { sequelize, Product, Category, Warehouse, Vendor, Expense, ProductCategory,ProductVendor, WarehouseStock } = require('../models');
 const { Op } = require('sequelize');
 const ownedData = require('../middlewares/dataHandler')
+const ExcelJS = require('exceljs');
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 1;
 const { sendEmail } = require('../emailService')
 
 class ProductController {
+  static async bulkInsert(req, res, next) {
+    try {
+      const file = req.file;
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(file.path);
+      const worksheet = workbook.getWorksheet(1);
+      const rows = worksheet.getRows(2, worksheet.rowCount);
+
+      await sequelize.transaction(async (t) => {
+        const products = rows.map((row) => ({
+          name: row.getCell('A').value,
+          price: row.getCell('B').value,
+          weight: row.getCell('C').value,
+          size: row.getCell('D').value,
+          description: row.getCell('E').value,
+          SKU: row.getCell('F').value,
+          category_id: row.getCell('G').value,
+        }));
+
+        const insertedProducts = await Product.bulkCreate(products, { transaction: t });
+
+        for (const product of insertedProducts) {
+          await ProductCategory.create(
+            { product_id: product.id, category_id: product.category_id },
+            { transaction: t }
+          );
+        }
+      });
+
+      res.json({ message: 'Bulk insert successful' });
+    } catch (error) {
+      next(error);
+    }
+  }
 
 
   static async create(req, res, next) {
     const { name, price, weight, size, description, SKU, category_id } = req.body;
     
-    
-
     try {
       const imagePath = `http://localhost:${process.env.PORT}/${req.file.path}`
       const product = await sequelize.transaction(async (t) => {
-        console.log(req.file.path)
         const createdProduct = await Product.create(
           { name, price, weight, size, description, SKU, user_id: req.user.id, image: imagePath},
           { transaction: t }
@@ -38,7 +70,6 @@ class ProductController {
       next(err);
     }
   }
-
 
   static async addStock(req, res, next) {
     const { vendor_id, warehouse_id, quantity, product_id } = req.body;
@@ -126,7 +157,6 @@ class ProductController {
     }
   }
   
-
   static async getAll(req, res, next) {
     try {
       const {page, limit} = req.query;
@@ -161,7 +191,6 @@ class ProductController {
     }
   }
   
-
   static async getById(req, res, next) {
     try {
       const data = await ownedData(Product, req.params.id, req.user.id);
@@ -170,7 +199,6 @@ class ProductController {
       next(err);
     }
   };
-
 
   static async update(req, res, next) {
     const { name, price, weight, size, description, SKU } = req.body;
@@ -225,6 +253,8 @@ class ProductController {
      next(err);
     }
   };
+
+  
 }
 
 function filtering(query, user) {
