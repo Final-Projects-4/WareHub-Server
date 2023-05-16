@@ -147,7 +147,7 @@ class ProductController {
           if (stock < 10) {
             const recipientEmail = 'vincentkho67@gmail.com';
             const subject = 'Low Stock Alert';
-            const html = `<p>Product ${product.id} in Warehouse ${warehouse.id} is running low on stock. Current stock: ${stock}</p>`;
+            const html = `<p>Product ${product.name} with an id of ${product.id} in Warehouse ${warehouse.name} is running low on stock. Current stock: ${stock}</p>`;
             sendEmail(recipientEmail, subject, html);
           }
         });
