@@ -3,7 +3,6 @@ const ownedData = require('../middlewares/dataHandler');
 
 class RevenueController {
 
-
   static async create(req, res, next) {
     const {revenue, detail } = req.body;
     try {
@@ -13,7 +12,6 @@ class RevenueController {
       next(err);
     }
   }
-
 
   static async getAll(req, res, next) {
     try {
@@ -35,7 +33,6 @@ class RevenueController {
     }
   }
 
-
   static getById = async (req, res, next) => {
     try {
       const data = await ownedData(Revenue, req.params.id, req.user.id);
@@ -44,8 +41,6 @@ class RevenueController {
       next(err);
     }
   };
-  
-
   
   static async update(req, res, next) {
     const { revenue, detail } = req.body;
@@ -75,7 +70,6 @@ class RevenueController {
     }
   }
 
-  
   static async delete(req, res, next) {
     try {
       const revenue = await ownedData(Revenue, req.params.id, req.user.id)

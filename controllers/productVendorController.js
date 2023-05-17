@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 
 class ProductVendorController {
 
-
   static async create(req, res, next) {
     const { product_id, vendor_id } = req.body;
 
@@ -23,7 +22,6 @@ class ProductVendorController {
     }
   }
 
-
   static async getAll(req, res, next) {
     try {
       const data = await ProductVendor.findAll({
@@ -39,7 +37,6 @@ class ProductVendorController {
       next(err);
     }
   }
-  
   
   static async getById(req, res, next) {
     const { id } = req.params;
@@ -69,7 +66,6 @@ class ProductVendorController {
     }
   }
 
-
   static async update(req, res, next) {
     const { id } = req.params;
     const { product_id, vendor_id } = req.body;
@@ -90,8 +86,7 @@ class ProductVendorController {
       next(err);
     }
   }
-
-  
+ 
   static async delete(req, res, next) {
     const { id } = req.params;
 

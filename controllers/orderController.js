@@ -6,7 +6,6 @@ const DEFAULT_LIMIT = 1;
 
 class OrderController {
 
-  
   static async create(req, res, next) {
     const { name, customer_id, warehouse_id,order_products } = req.body;
   
@@ -83,7 +82,6 @@ class OrderController {
     }
   }
   
-
   static async getAll(req, res, next) {
     try {
       const { page,limit } = req.query;
@@ -102,7 +100,6 @@ class OrderController {
     }
   }
   
-
   static async getById(req, res, next) {
     try {
       const data = await ownedData(Order, req.params.id, req.user.id);
@@ -111,7 +108,6 @@ class OrderController {
       next(err);
     }
   }
-
 
   static update = async (req, res, next) => {
     const { customer_id, name, warehouse_id, order_products } = req.body;
@@ -249,7 +245,6 @@ class OrderController {
       next(err);
     }
   };
-
 
   static delete = async (req, res, next) => {
     try {

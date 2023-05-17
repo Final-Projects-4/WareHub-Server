@@ -17,7 +17,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           first_name: "Johnnie",
           last_name: "Grealish",
           email: "jgrealish0@constantcontact.com",
@@ -37,7 +37,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           first_name: "Bancroft",
           last_name: "Ashman",
           email: "bashman2@rediff.com",

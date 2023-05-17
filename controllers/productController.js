@@ -1,47 +1,71 @@
 const { sequelize, Product, Category, Warehouse, Vendor, Expense, ProductCategory,ProductVendor, WarehouseStock } = require('../models');
 const { Op } = require('sequelize');
 const ownedData = require('../middlewares/dataHandler')
-const ExcelJS = require('exceljs');
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 1;
 const { sendEmail } = require('../emailService')
-
+const fs = require('fs')
 class ProductController {
   static async bulkInsert(req, res, next) {
-    try {
-      const file = req.file;
-      const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(file.path);
-      const worksheet = workbook.getWorksheet(1);
-      const rows = worksheet.getRows(2, worksheet.rowCount);
+    const t = await sequelize.transaction()
+      try {
+        
+        const file = req.file.filename;
+        let data = fs.readFileSync(`./assets/${file}`, 'utf-8');
+        data = data.split("\n")
+        data.shift()
+        data.pop()
+        
+        
+        for(let i = 0; i < data.length; i++) {
+          const productData = data[i].split(";")
+          if (productData.length !== 7) {
+            console.log(`Invalid data format in line ${i + 2}: ${data[i]}`);
+            continue; 
+          }
 
-      await sequelize.transaction(async (t) => {
-        const products = rows.map((row) => ({
-          name: row.getCell('A').value,
-          price: row.getCell('B').value,
-          weight: row.getCell('C').value,
-          size: row.getCell('D').value,
-          description: row.getCell('E').value,
-          SKU: row.getCell('F').value,
-          category_id: row.getCell('G').value,
-        }));
+          const name = productData[0]
+          const price = productData[1]
+          const weight = productData[2]
+          const size = productData[3]
+          const description = productData[4]
+          const SKU = productData[5]
+          const category_id = productData[6]
 
-        const insertedProducts = await Product.bulkCreate(products, { transaction: t });
+          console.log(`Name: ${name}`);
+          console.log(`Price: ${price}`);
+          console.log(`Weight: ${weight}`);
+          console.log(`Size: ${size}`);
+          console.log(`Description: ${description}`);
+          console.log(`SKU: ${SKU}`);
+          console.log(`Category ID: ${category_id}`);
 
-        for (const product of insertedProducts) {
+          const newProduct = {
+            name,
+            price,
+            weight,
+            size,
+            description,
+            SKU,
+            category_id,
+            user_id: req.user.id
+          }
+          const createdProduct = await Product.create(newProduct, {transaction: t})
+
           await ProductCategory.create(
-            { product_id: product.id, category_id: product.category_id },
-            { transaction: t }
-          );
+            { product_id: createdProduct.id, category_id },
+            { transaction: t}
+          )
         }
-      });
 
-      res.json({ message: 'Bulk insert successful' });
-    } catch (error) {
-      next(error);
-    }
+        await t.commit();
+        res.status(200).json({ message: "Bulk create successful" })
+      } catch(err) {
+        await t.rollback()
+        next(err)
+      }
   }
-
+  
 
   static async create(req, res, next) {
     const { name, price, weight, size, description, SKU, category_id } = req.body;
@@ -254,7 +278,6 @@ class ProductController {
     }
   };
 
-  
 }
 
 function filtering(query, user) {

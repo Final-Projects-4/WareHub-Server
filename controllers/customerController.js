@@ -4,7 +4,6 @@ const ownedData = require('../middlewares/dataHandler');
 
 class CustomerController {
 
-
   static create = async (req, res, next) => {
     const { first_name, last_name, email, address, company } = req.body;
     try {
@@ -23,7 +22,6 @@ class CustomerController {
     }
   };
 
-
   static getAll = async (req, res, next) => {
     try {
       const data = await Customer.findAll({
@@ -37,7 +35,6 @@ class CustomerController {
     }
   };
 
-
   static getById = async (req, res, next) => {
     try {
       const data = await ownedData(Customer, req.params.id, req.user.id);
@@ -46,8 +43,7 @@ class CustomerController {
       next(err);
     }
   };
-  
-  
+    
   static update = async (req, res, next) => {
     const { first_name, last_name, email, address, company } = req.body;
     try {
@@ -83,7 +79,6 @@ class CustomerController {
      next(err);
     }
   };
-
 
   static delete = async (req, res, next) => {
     try {

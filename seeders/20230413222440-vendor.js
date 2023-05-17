@@ -28,14 +28,14 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           name: "Blackberry",
           country: "Indonesia",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           name: "Motorolla",
           country: "China",
           createdAt: new Date(),
