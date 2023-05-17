@@ -32,14 +32,6 @@ class ProductController {
           const SKU = productData[5]
           const category_id = productData[6]
 
-          console.log(`Name: ${name}`);
-          console.log(`Price: ${price}`);
-          console.log(`Weight: ${weight}`);
-          console.log(`Size: ${size}`);
-          console.log(`Description: ${description}`);
-          console.log(`SKU: ${SKU}`);
-          console.log(`Category ID: ${category_id}`);
-
           const newProduct = {
             name,
             price,
