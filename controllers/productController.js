@@ -221,41 +221,49 @@ class ProductController {
     const { file } = req;
     try {
       const data = await ownedData(Product, req.params.id, req.user.id);
-      let updateFields = { 
-        name, 
-        price, 
-        weight, 
-        size, 
-        description, 
-        SKU 
+      let updateFields = {
+        name,
+        price,
+        weight,
+        size,
+        description,
+        SKU,
       };
+  
       if (file) {
-        updateFields.image = file.path;
+        const imagePath = `http://localhost:${process.env.PORT}/${file.path}`;
+      updateFields.image = imagePath;
       }
+  
       const [numOfRowsAffected, [updatedData]] = await Product.update(
         updateFields,
-        { 
+        {
           where: { id: data.id },
-          returning: true 
+          returning: true,
         }
       );
-      res.status(200).json({ 
+  
+      updatedData.dataValues.image = updatedData.image.replace('http://localhost:${process.env.PORT}/', '');
+  
+      res.status(200).json({
         previous: {
-          name: data.name, 
-          price: data.price, 
-          weight: data.weight, 
-          size: data.size, 
-          description: data.description, 
+          name: data.name,
+          price: data.price,
+          weight: data.weight,
+          size: data.size,
+          description: data.description,
           SKU: data.SKU,
-          image: data.image
+          image: data.image,
         },
         current: updatedData,
-        dataUpdated: numOfRowsAffected
+        dataUpdated: numOfRowsAffected,
       });
     } catch (err) {
       next(err);
     }
   }
+  
+  
 
   static async delete(req, res, next) {
     try {
