@@ -4,19 +4,67 @@ const ownedData = require('../middlewares/dataHandler')
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 1;
 const { sendEmail } = require('../emailService')
-
+const fs = require('fs')
 class ProductController {
+  static async bulkInsert(req, res, next) {
+    const t = await sequelize.transaction()
+      try {
+        
+        const file = req.file.filename;
+        let data = fs.readFileSync(`./assets/${file}`, 'utf-8');
+        data = data.split("\n")
+        data.shift()
+        data.pop()
+        
+        
+        for(let i = 0; i < data.length; i++) {
+          const productData = data[i].split(";")
+          if (productData.length !== 7) {
+            console.log(`Invalid data format in line ${i + 2}: ${data[i]}`);
+            continue; 
+          }
 
+          const name = productData[0]
+          const price = productData[1]
+          const weight = productData[2]
+          const size = productData[3]
+          const description = productData[4]
+          const SKU = productData[5]
+          const category_id = productData[6]
+
+          const newProduct = {
+            name,
+            price,
+            weight,
+            size,
+            description,
+            SKU,
+            category_id,
+            user_id: req.user.id
+          }
+          const createdProduct = await Product.create(newProduct, {transaction: t})
+
+          await ProductCategory.create(
+            { product_id: createdProduct.id, category_id },
+            { transaction: t}
+          )
+        }
+
+        await t.commit();
+        res.status(200).json({ message: "Bulk create successful" })
+      } catch(err) {
+        await t.rollback()
+        next(err)
+      }
+  }
+  
 
   static async create(req, res, next) {
     const { name, price, weight, size, description, SKU, category_id } = req.body;
     
-    
-
     try {
       const imagePath = `http://localhost:${process.env.PORT}/${req.file.path}`
       const product = await sequelize.transaction(async (t) => {
-        console.log(req.file.path)
         const createdProduct = await Product.create(
           { name, price, weight, size, description, SKU, user_id: req.user.id, image: imagePath},
           { transaction: t }
@@ -38,7 +86,6 @@ class ProductController {
       next(err);
     }
   }
-
 
   static async addStock(req, res, next) {
     const { vendor_id, warehouse_id, quantity, product_id } = req.body;
@@ -126,7 +173,6 @@ class ProductController {
     }
   }
   
-
   static async getAll(req, res, next) {
     try {
       const {page, limit} = req.query;
@@ -161,7 +207,6 @@ class ProductController {
     }
   }
   
-
   static async getById(req, res, next) {
     try {
       const data = await ownedData(Product, req.params.id, req.user.id);
@@ -170,7 +215,6 @@ class ProductController {
       next(err);
     }
   };
-
 
   static async update(req, res, next) {
     const { name, price, weight, size, description, SKU } = req.body;
@@ -225,6 +269,7 @@ class ProductController {
      next(err);
     }
   };
+
 }
 
 function filtering(query, user) {

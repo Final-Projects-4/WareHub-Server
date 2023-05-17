@@ -2,7 +2,6 @@ const { Category } = require("../models/");
 
 class CategoryController {
 
-
   static create = async (req, res, next) => {
     const { name, description } = req.body;
     try {
@@ -18,7 +17,6 @@ class CategoryController {
     }
   };
 
-
   static getAll = async (req, res, next) => {
     try {
       const data = await Category.findAll({});
@@ -27,7 +25,6 @@ class CategoryController {
       next(err);
     }
   };
-
 
   static getById = async (req, res, next) => {
     try {
@@ -38,7 +35,6 @@ class CategoryController {
       next(err);
     }
   };
-  
   
   static update = async (req, res, next) => {
     const { id } = req.params;
@@ -71,7 +67,6 @@ class CategoryController {
       next(err);
     }
   };
-
   
   static delete = async (req, res, next) => {
     const { id } = req.params;
@@ -89,9 +84,6 @@ class CategoryController {
       next(err);
     }
   };
-
-
-  
 }
 
 module.exports = CategoryController;

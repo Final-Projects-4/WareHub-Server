@@ -29,5 +29,7 @@ router.post('/create', (req, res, next) => {
 router.post('/stocks', ProductController.addStock);
 router.put('/:id', upload.single('image'), ProductController.update);
 router.delete('/:id', ProductController.delete);
+router.post('/bulk', upload.single('file'), ProductController.bulkInsert);
+
 
 module.exports = router;

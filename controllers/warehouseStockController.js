@@ -4,7 +4,6 @@ const ownedData = require('../middlewares/dataHandler')
 
 class WarehouseStockController {
 
-  
   static moveProduct = async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
@@ -47,7 +46,6 @@ class WarehouseStockController {
     }
   }
   
-
   static getAll = async (req, res, next) => {
     try {
       // Get warehouses for the current user
@@ -70,7 +68,6 @@ class WarehouseStockController {
     }
   };
   
-
   static async getById(req, res, next) {
     const { id } = req.params;
   
@@ -92,7 +89,6 @@ class WarehouseStockController {
       next(err);
     }
   }
-  
   
   static update = async (req, res, next) => {
     const t = await sequelize.transaction();
@@ -130,7 +126,6 @@ class WarehouseStockController {
       next(err);
     }
   };
-  
 
   static delete = async (req, res, next) => {
     try {

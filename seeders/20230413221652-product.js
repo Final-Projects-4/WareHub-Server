@@ -19,7 +19,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           name: "Tomatoes - Vine Ripe, Yellow",
           price: 200,
           weight: "100 grams",
@@ -45,7 +45,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           name: "Wine - White, Schroder And Schyl",
           price: 400,
           weight: "50 grams",

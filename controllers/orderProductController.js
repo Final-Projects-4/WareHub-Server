@@ -4,7 +4,6 @@ const ownedData = require('../middlewares/dataHandler');
 
 class OrderProductController {
 
-
   static async create(req, res, next) {
     try {
       const { product_id, order_id, price, quantity } = req.body;
@@ -15,7 +14,6 @@ class OrderProductController {
       console.log(err)
     }
   }
-
 
   static async getAll(req, res, next) {
     try {
@@ -38,7 +36,6 @@ class OrderProductController {
     }
   }
 
-
   static async getById(req, res, next) {
     try {
       const data = await OrderProduct.findOne({
@@ -53,7 +50,6 @@ class OrderProductController {
       next(err);
     }
   }
-
   
   static async update(req, res, next) {
     try {
@@ -89,7 +85,6 @@ class OrderProductController {
       next(err);
     }
   }
-
 
   static async delete(req, res, next) {
     try {

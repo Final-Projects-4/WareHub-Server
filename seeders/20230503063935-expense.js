@@ -13,7 +13,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        { user_id: 2,
+        { user_id: 1,
           expense: 60000,
           detail: "detail of product 2 & 4",
           createdAt: new Date(),

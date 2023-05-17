@@ -15,7 +15,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           name: "Warehouse 2",
           city: "Depok",
           address: "Jl Penghasahan No 10",
@@ -31,7 +31,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          user_id: 2,
+          user_id: 1,
           city: "Bergvliet",
           name: "Warehouse 4",
           address: "976 Eastlawn Terrace Bergvliet",

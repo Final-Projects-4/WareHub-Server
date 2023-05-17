@@ -16,7 +16,6 @@ class UserController {
     }
   }
 
-
   static async login(req, res, next) {
     try {
       const { username, password } = req.body;
@@ -44,7 +43,6 @@ class UserController {
     }
   }
 
-
   static async getAll(req, res, next) {
     try {
       const data = await User.findAll({});
@@ -53,7 +51,6 @@ class UserController {
       next(err);
     }
   }
-
 
   static async getById(req, res, next) {
     const {id} = req.params;
@@ -75,7 +72,6 @@ class UserController {
     }
   }
 
-
   static async update(req, res, next) {
     try {
       const { id } = req.params;
@@ -94,7 +90,6 @@ class UserController {
     }
   }
 
-  
   static async delete(req, res, next) {
     try {
       const { id } = req.params;
