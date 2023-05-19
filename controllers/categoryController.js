@@ -28,13 +28,24 @@ class CategoryController {
 
   static getById = async (req, res, next) => {
     try {
-      const data = await Category.findByPk(req.params.id);
-      if (!data) throw { name: 'ErrorNotFound' };
+      const categoryId = req.params.id;
+      const category = await Category.findByPk(categoryId);
+      if (!category) throw { name: 'ErrorNotFound' };
+  
+      const products = await category.getProducts();
+  
+      const data = {
+        category: category,
+        products: products
+      };
+  
       res.status(200).json(data);
     } catch (err) {
       next(err);
     }
   };
+  
+  
   
   static update = async (req, res, next) => {
     const { id } = req.params;

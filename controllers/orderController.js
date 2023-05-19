@@ -100,14 +100,31 @@ class OrderController {
     }
   }
   
-  static async getById(req, res, next) {
+  static getById = async (req, res, next) => {
     try {
-      const data = await ownedData(Order, req.params.id, req.user.id);
+      const orderId = req.params.id;
+      const userId = req.user.id;
+  
+      const order = await ownedData(Order, orderId, userId);
+      const products = await order.getProducts();
+      const warehouses = await order.getWarehouse();
+      const customers = await order.getCustomer();
+      const details = await order.getOrderProducts();
+  
+      const data = {
+        order: order,
+        products: products,
+        warehouse: warehouses,
+        customer: customers,
+        details: details
+      };
+  
       res.status(200).json(data);
     } catch (err) {
       next(err);
     }
-  }
+  };
+  
 
   static update = async (req, res, next) => {
     const { customer_id, name, warehouse_id, order_products } = req.body;
