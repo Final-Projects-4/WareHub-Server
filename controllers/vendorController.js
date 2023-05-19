@@ -34,12 +34,25 @@ class VendorController {
 
   static getById = async (req, res, next) => {
     try {
-      const data = await ownedData(Vendor, req.params.id, req.user.id);
+      const vendorId = req.params.id;
+      const userId = req.user.id;
+  
+      const vendor = await ownedData(Vendor, vendorId, userId);
+      const products = await vendor.getProducts(); // Retrieve associated products
+  
+      const uniqueProducts = [...new Map(products.map(product => [product.id, product])).values()];
+  
+      const data = {
+        vendor: vendor,
+        products: uniqueProducts
+      };
+  
       res.status(200).json(data);
     } catch (err) { 
       next(err);
     }
   };
+  
 
   static update = async (req, res, next) => {
     const { name, country } = req.body;
