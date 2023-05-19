@@ -12,7 +12,7 @@ module.exports = {
           price: 100,
           weight: "1 Kg",
           size: "20 Cm",
-          description: "Keripik tela curah",
+          description: "Vine Ripe, Yellow a fresh products taken directly from suppliers",
           SKU: "KTC1",
           image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
           createdAt: new Date(),
