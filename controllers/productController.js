@@ -20,7 +20,6 @@ class ProductController {
         for(let i = 0; i < data.length; i++) {
           const productData = data[i].split(";")
           if (productData.length !== 7) {
-            console.log(`Invalid data format in line ${i + 2}: ${data[i]}`);
             continue; 
           }
 
@@ -43,13 +42,11 @@ class ProductController {
             user_id: req.user.id
           }
           const createdProduct = await Product.create(newProduct, {transaction: t})
-
           await ProductCategory.create(
             { product_id: createdProduct.id, category_id },
             { transaction: t}
           )
         }
-
         await t.commit();
         res.status(200).json({ message: "Bulk create successful" })
       } catch(err) {
@@ -57,7 +54,6 @@ class ProductController {
         next(err)
       }
   }
-  
 
   static async create(req, res, next) {
     const { name, price, weight, size, description, SKU, category_id } = req.body;
@@ -209,8 +205,23 @@ class ProductController {
   
   static async getById(req, res, next) {
     try {
-      const data = await ownedData(Product, req.params.id, req.user.id);
-      res.status(200).json(data);
+      const data = await ownedData(Product, req.params.id, req.user.id, {
+        include: [Warehouse]
+      });
+
+      const stocks = data.Warehouses.map((warehouse) => {
+        return {
+          id: warehouse.id,
+          WarehouseStock: warehouse.WarehouseStock
+        };
+      });
+  
+      const newResponse = {
+        Stocks: stocks
+      };
+  
+      const response = Object.assign({}, data.toJSON(), newResponse);
+      res.status(200).json(response);
     } catch (err) { 
       next(err);
     }
@@ -221,42 +232,48 @@ class ProductController {
     const { file } = req;
     try {
       const data = await ownedData(Product, req.params.id, req.user.id);
-      let updateFields = { 
-        name, 
-        price, 
-        weight, 
-        size, 
-        description, 
-        SKU 
+      let updateFields = {
+        name,
+        price,
+        weight,
+        size,
+        description,
+        SKU,
       };
+  
       if (file) {
-        updateFields.image = file.path;
+        const imagePath = `http://localhost:${process.env.PORT}/${file.path}`;
+      updateFields.image = imagePath;
       }
+  
       const [numOfRowsAffected, [updatedData]] = await Product.update(
         updateFields,
-        { 
+        {
           where: { id: data.id },
-          returning: true 
+          returning: true,
         }
       );
-      res.status(200).json({ 
+  
+      updatedData.dataValues.image = updatedData.image.replace('http://localhost:${process.env.PORT}/', '');
+  
+      res.status(200).json({
         previous: {
-          name: data.name, 
-          price: data.price, 
-          weight: data.weight, 
-          size: data.size, 
-          description: data.description, 
+          name: data.name,
+          price: data.price,
+          weight: data.weight,
+          size: data.size,
+          description: data.description,
           SKU: data.SKU,
-          image: data.image
+          image: data.image,
         },
         current: updatedData,
-        dataUpdated: numOfRowsAffected
+        dataUpdated: numOfRowsAffected,
       });
     } catch (err) {
       next(err);
     }
   }
-
+  
   static async delete(req, res, next) {
     try {
       const product = await ownedData(Product, req.params.id, req.user.id);
