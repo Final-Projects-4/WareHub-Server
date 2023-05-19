@@ -20,7 +20,6 @@ class ProductController {
         for(let i = 0; i < data.length; i++) {
           const productData = data[i].split(";")
           if (productData.length !== 7) {
-            
             continue; 
           }
 
@@ -43,13 +42,11 @@ class ProductController {
             user_id: req.user.id
           }
           const createdProduct = await Product.create(newProduct, {transaction: t})
-
           await ProductCategory.create(
             { product_id: createdProduct.id, category_id },
             { transaction: t}
           )
         }
-
         await t.commit();
         res.status(200).json({ message: "Bulk create successful" })
       } catch(err) {
