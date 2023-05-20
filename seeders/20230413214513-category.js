@@ -8,13 +8,13 @@ module.exports = {
       [
         {
           name: "Foods",
-          description: " Generic foods category ",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pulvinar venenatis pharetra. Ut id neque orci. Suspendisse potenti. Cras interdum dui at semper sodales. Suspendisse aliquet, sapien at ornare suscipit. ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           name: "Electronics",
-          description: " zapp zapp ",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pulvinar venenatis pharetra. Ut id neque orci. Suspendisse potenti. Cras interdum dui at semper sodales. Suspendisse aliquet, sapien at ornare suscipit. ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -26,7 +26,7 @@ module.exports = {
         },
         {
           name: "Jewelry",
-          description: "cling cling",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pulvinar venenatis pharetra. Ut id neque orci. Suspendisse potenti. Cras interdum dui at semper sodales. Suspendisse aliquet, sapien at ornare suscipit. ",
           createdAt: new Date(),
           updatedAt: new Date(),
         }
