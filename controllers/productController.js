@@ -6,6 +6,7 @@ const DEFAULT_LIMIT = 1;
 const { sendEmail } = require('../emailService')
 const fs = require('fs')
 class ProductController {
+  
   static async bulkInsert(req, res, next) {
     const t = await sequelize.transaction()
       try {
