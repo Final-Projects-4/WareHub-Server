@@ -52,6 +52,25 @@ class UserController {
     }
   }
 
+  static async getAuth(req, res, next) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const {id , username} = decodedToken
+    console.log(decodedToken)
+    try {
+    console.log("data")
+    const data = await User.findOne({
+      where : {
+        id
+      }
+    });
+      res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async getById(req, res, next) {
     const {id} = req.params;
 
@@ -102,6 +121,7 @@ class UserController {
       next(err);
     }
   }
+
 }
 
 module.exports = UserController;
