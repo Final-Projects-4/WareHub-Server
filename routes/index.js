@@ -3,6 +3,7 @@ const router = express.Router();
 const categoryRouter = require("./category");
 const customerRouter = require("./customer");
 const usersRouter = require("./users")
+const userRouter = require("./user")
 const productRouter = require("./product")
 const expenseRouter = require("./expense");
 const orderRouter = require("./order");
@@ -16,6 +17,7 @@ const auth = require('../middlewares/auth')
 
 router.use('/users', usersRouter);
 router.use(auth);
+router.use('/user', userRouter);
 router.use('/products', productRouter);
 router.use('/categories', categoryRouter);
 router.use('/customers', customerRouter);
